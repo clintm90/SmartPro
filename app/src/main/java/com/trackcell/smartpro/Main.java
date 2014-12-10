@@ -119,17 +119,24 @@ public class Main extends Activity implements ActionBar.TabListener
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
+            switch (getArguments().getInt(ARG_SECTION_NUMBER))
+            {
+                case 1:
+                    ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
 
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            ProjectListAdapter mProjectListAdapter = new ProjectListAdapter(getActivity().getApplicationContext(), PROJECTLIST);
-            mProjectListAdapter.clear();
-            mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
-            mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Event System", "A Best application", EnumProject.LATE));
-            mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Vertigo", "A free project managemenr", EnumProject.LATE));
+                    View rootView = inflater.inflate(R.layout.fragment_project, container, false);
 
-            ((ListView)rootView.findViewById(R.id.ProjectList)).setAdapter(mProjectListAdapter);
-            return rootView;
+                    ProjectListAdapter mProjectListAdapter = new ProjectListAdapter(getActivity().getApplicationContext(), PROJECTLIST);
+                    mProjectListAdapter.clear();
+                    mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
+                    mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Event System", "A Best application", EnumProject.WAIT));
+                    mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Vertigo", "A free project managemenr", EnumProject.LATE));
+
+                    ((ListView) rootView.findViewById(R.id.ProjectList)).setAdapter(mProjectListAdapter);
+                    return rootView;
+                default:
+                    return null;
+            }
         }
     }
 

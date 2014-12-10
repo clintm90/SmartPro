@@ -1,17 +1,15 @@
 package com.trackcell.smartpro;
 
 import android.content.Context;
-import android.widget.TextView;
 
 import java.io.Serializable;
 
 public class EnumProject implements Serializable
 {
     public Context mContext;
-    public TextView State;
-
     public String Name;
     public String Description;
+    public int State;
 
     public final static int CURRENT = 0;
     public final static int WAIT = 1;
@@ -22,5 +20,6 @@ public class EnumProject implements Serializable
         mContext = context;
         Name = name;
         Description = description;
+        State = state;
     }
 }

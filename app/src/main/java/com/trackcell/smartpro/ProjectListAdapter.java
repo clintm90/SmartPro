@@ -34,7 +34,21 @@ public class ProjectListAdapter extends ArrayAdapter<EnumProject>
 
         projectListName.setText(values.get(position).Name);
         projectListDescription.setText(values.get(position).Description);
-        //projectListState.setText((values.get(position).State).getText());
+
+        switch(values.get(position).State)
+        {
+            case 0:
+                projectListState.setText("Prévu");
+                projectListState.setBackgroundResource(R.drawable.balloon_blue);
+                break;
+            case 1:
+                projectListState.setText("En attente");
+                projectListState.setBackgroundResource(R.drawable.balloon_orange);
+                break;
+            case 2:
+                projectListState.setText("En retard");
+                projectListState.setBackgroundResource(R.drawable.balloon_red);
+        }
 
         rowView.setTag(values.get(position));
 
