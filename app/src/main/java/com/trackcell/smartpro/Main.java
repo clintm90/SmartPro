@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -22,10 +23,9 @@ import java.util.Locale;
 public class Main extends Activity implements ActionBar.TabListener
 {
     private Context parent;
-    private ListView mListView;
-
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    int CurrentPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,17 +41,22 @@ public class Main extends Activity implements ActionBar.TabListener
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.MainContent);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        mListView = (ListView)findViewById(R.id.ProjectList);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
         {
             @Override
             public void onPageSelected(int position)
             {
+                CurrentPage = position;
                 actionBar.setSelectedNavigationItem(position);
+
+                switch(position)
+                {
+                    case 1:
+                        break;
+                }
             }
         });
 
@@ -64,6 +69,10 @@ public class Main extends Activity implements ActionBar.TabListener
         }
     }
 
+    public void GotoAdd(MenuItem item)
+    {
+        Toast.makeText(getApplicationContext(), String.valueOf(CurrentPage), Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -119,12 +128,17 @@ public class Main extends Activity implements ActionBar.TabListener
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
+            ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
+            ArrayList<EnumResource> RESOURCESLIST = new ArrayList<EnumResource>();
+            ArrayList<EnumTask> TASKLIST = new ArrayList<EnumTask>();
+
+            View rootView = null;
+
             switch (getArguments().getInt(ARG_SECTION_NUMBER))
             {
                 case 1:
-                    ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
 
-                    View rootView = inflater.inflate(R.layout.fragment_project, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_project, container, false);
 
                     ProjectListAdapter mProjectListAdapter = new ProjectListAdapter(getActivity().getApplicationContext(), PROJECTLIST);
                     mProjectListAdapter.clear();
@@ -134,6 +148,27 @@ public class Main extends Activity implements ActionBar.TabListener
 
                     ((ListView) rootView.findViewById(R.id.ProjectList)).setAdapter(mProjectListAdapter);
                     return rootView;
+
+                case 2:
+                    rootView = inflater.inflate(R.layout.fragment_resources, container, false);
+
+                    ResourcesListAdapter mResoucesListAdapter = new ResourcesListAdapter(getActivity().getApplicationContext(), RESOURCESLIST);
+                    mResoucesListAdapter.clear();
+                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application"));
+
+                    ((ListView) rootView.findViewById(R.id.ResourcesList)).setAdapter(mResoucesListAdapter);
+                    return rootView;
+
+                case 3:
+                    rootView = inflater.inflate(R.layout.fragment_task, container, false);
+
+                    TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), TASKLIST);
+                    mTaskListAdapter.clear();
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), "Manger", "My first application"));
+
+                    ((ListView) rootView.findViewById(R.id.TaskList)).setAdapter(mTaskListAdapter);
+                    return rootView;
+
                 default:
                     return null;
             }

@@ -5,6 +5,7 @@
     <item android:id="@+id/action_newproject"
           android:icon="@drawable/ic_action_add"
           android:title="@string/action_newproject"
+          android:onClick="GotoAdd"
           android:showAsAction="always" />
 
     <item android:id="@+id/action_more"
