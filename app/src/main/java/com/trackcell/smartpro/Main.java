@@ -316,6 +316,8 @@ public class Main extends Activity implements ActionBar.TabListener
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
                             Intent mResourceIntent = new Intent(getActivity().getApplicationContext(), Resource.class);
+                            mResourceIntent.putExtra("name", ((EnumResource)view.getTag()).Name);
+                            mResourceIntent.putExtra("id", "1");
                             startActivityForResult(mResourceIntent, 1);
                         }
                     });

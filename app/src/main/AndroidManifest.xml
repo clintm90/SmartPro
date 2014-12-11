@@ -26,9 +26,17 @@
             android:name=".Resource"
             android:icon="@null"
             android:label="@string/title_activity_resource"
+            android:logo="@android:color/transparent"
             android:parentActivityName=".Main"
-            android:theme="@style/AppTheme.ActionBar.Back"
-            android:logo="@android:color/transparent">
+            android:theme="@style/AppTheme.ActionBar.Back" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.trackcell.smartpro.Main" />
+        </activity>
+        <activity
+            android:name=".Project"
+            android:label="@string/title_activity_project"
+            android:parentActivityName=".Main" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.trackcell.smartpro.Main" />
