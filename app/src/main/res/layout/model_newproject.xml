@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="64dp"
+        android:scaleType="center"
+        android:background="@color/green"
+        android:text="@string/newproject"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="19sp"/>
+
+    <EditText
+        android:id="@+id/model_newproject_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/projectname"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:inputType="textCapSentences"/>
+
+    <EditText
+        android:id="@+id/model_newproject_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/projectdescription"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:inputType="textCapSentences"
+        android:layout_gravity="center_horizontal"
+        android:minWidth="3dp"
+        android:singleLine="false"/>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:id="@+id/model_newproject_resources"
+        android:entries="@array/sports"/>
+
+</LinearLayout>

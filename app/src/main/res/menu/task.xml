@@ -2,14 +2,13 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".Main" >
 
-    <item android:id="@+id/action_newproject"
+    <item android:id="@+id/action_newtask"
           android:icon="@drawable/ic_action_add"
-          android:title="@string/action_newproject"
-          android:onClick="GotoNewProject"
+          android:title="@string/action_newtask"
           android:showAsAction="always" />
 
-    <item android:id="@+id/action_more"
-          android:icon="@drawable/ic_action_more"
-          android:title="@string/action_more"
+    <item android:id="@+id/action_calendar"
+          android:icon="@drawable/ic_action_calendar"
+          android:title="@string/action_search"
           android:showAsAction="always" />
 </menu>

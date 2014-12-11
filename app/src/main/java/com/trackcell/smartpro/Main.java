@@ -2,15 +2,18 @@ package com.trackcell.smartpro;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,8 @@ public class Main extends Activity implements ActionBar.TabListener
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
     int CurrentPage = 0;
+
+    private ListView mResourcesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -69,15 +74,47 @@ public class Main extends Activity implements ActionBar.TabListener
         }
     }
 
-    public void GotoAdd(MenuItem item)
+    public void GotoNewProject(MenuItem item)
     {
-        Toast.makeText(getApplicationContext(), String.valueOf(CurrentPage), Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        final View modelRegister = getLayoutInflater().inflate(R.layout.model_newproject, null);
+
+        alertDialog.setView(modelRegister);
+        alertDialog.setCancelable(true);
+        alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+        alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
+                ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
+                mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut"));
+                mResourceList.setAdapter(mResourceListAdapter);
+            }
+        });
+        alertDialog.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onSearchRequested()
+    {
+        Toast.makeText(getApplicationContext(), "salut", Toast.LENGTH_SHORT).show();
+        return super.onSearchRequested();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -119,10 +156,30 @@ public class Main extends Activity implements ActionBar.TabListener
         public static PlaceholderFragment newInstance(int sectionNumber)
         {
             PlaceholderFragment fragment = new PlaceholderFragment();
+            fragment.setHasOptionsMenu(true);
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
             return fragment;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+        {
+            switch(getArguments().getInt(ARG_SECTION_NUMBER))
+            {
+                case 1:
+                    inflater.inflate(R.menu.main, menu);
+                    break;
+
+                case 2:
+                    inflater.inflate(R.menu.resources, menu);
+                    break;
+
+                case 3:
+                    inflater.inflate(R.menu.task, menu);
+                    break;
+            }
         }
 
         @Override
@@ -134,7 +191,7 @@ public class Main extends Activity implements ActionBar.TabListener
 
             View rootView = null;
 
-            switch (getArguments().getInt(ARG_SECTION_NUMBER))
+            switch(getArguments().getInt(ARG_SECTION_NUMBER))
             {
                 case 1:
 
@@ -170,7 +227,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     return rootView;
 
                 default:
-                    return null;
+                    return rootView;
             }
         }
     }
