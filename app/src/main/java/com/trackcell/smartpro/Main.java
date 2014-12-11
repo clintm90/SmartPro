@@ -17,7 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -76,13 +79,39 @@ public class Main extends Activity implements ActionBar.TabListener
 
     public void GotoNewProject(MenuItem item)
     {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         final View modelRegister = getLayoutInflater().inflate(R.layout.model_newproject, null);
 
-        alertDialog.setView(modelRegister);
-        alertDialog.setCancelable(true);
-        alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+        alertDialogBuilder.setView(modelRegister);
+        alertDialogBuilder.setCancelable(true);
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialogBuilder.setPositiveButton(getString(R.string.valid), null);
+        alertDialogBuilder.setNegativeButton(getString(R.string.cancel), null);
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+        {
+            @Override
+            public void onShow(DialogInterface dialog)
+            {
+                Toast.makeText(getApplicationContext(), "salut", Toast.LENGTH_SHORT).show();
+                Button button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        ((TextView)modelRegister.findViewById(R.id.model_resourcesList_name)).setError("salut");
+                        ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
+                        ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
+                        mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut"));
+                        mResourceList.setAdapter(mResourceListAdapter);
+                        alertDialog.cancel();
+                    }
+                });
+            }
+        });
+        /*alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -99,9 +128,8 @@ public class Main extends Activity implements ActionBar.TabListener
                 mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut"));
                 mResourceList.setAdapter(mResourceListAdapter);
             }
-        });
-        alertDialog.create();
-        alertDialog.show();
+        });*/
+        alertDialogBuilder.show();
     }
 
     @Override
@@ -185,7 +213,7 @@ public class Main extends Activity implements ActionBar.TabListener
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
+            final ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
             ArrayList<EnumResource> RESOURCESLIST = new ArrayList<EnumResource>();
             ArrayList<EnumTask> TASKLIST = new ArrayList<EnumTask>();
 
@@ -196,6 +224,7 @@ public class Main extends Activity implements ActionBar.TabListener
                 case 1:
 
                     rootView = inflater.inflate(R.layout.fragment_project, container, false);
+                    ListView mProjectList = ((ListView) rootView.findViewById(R.id.ProjectList));
 
                     ProjectListAdapter mProjectListAdapter = new ProjectListAdapter(getActivity().getApplicationContext(), PROJECTLIST);
                     mProjectListAdapter.clear();
@@ -203,7 +232,23 @@ public class Main extends Activity implements ActionBar.TabListener
                     mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Event System", "A Best application", EnumProject.WAIT));
                     mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Vertigo", "A free project managemenr", EnumProject.LATE));
 
-                    ((ListView) rootView.findViewById(R.id.ProjectList)).setAdapter(mProjectListAdapter);
+                    mProjectList.setAdapter(mProjectListAdapter);
+                    mProjectList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            //goto Project
+                        }
+                    });
+                    mProjectList.setOnLongClickListener(new View.OnLongClickListener()
+                    {
+                        @Override
+                        public boolean onLongClick(View v)
+                        {
+                            return false;
+                        }
+                    });
                     return rootView;
 
                 case 2:
