@@ -132,10 +132,33 @@ public class Main extends Activity implements ActionBar.TabListener
         alertDialogBuilder.show();
     }
 
+    public void GotoNewPerson(MenuItem item)
+    {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        final View modelRegister = getLayoutInflater().inflate(R.layout.model_newresource, null);
+        alertDialogBuilder.setView(modelRegister);
+        alertDialogBuilder.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+        alertDialogBuilder.setNeutralButton(getString(R.string.importcontact), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
+    }
+
     @Override
     public boolean onSearchRequested()
     {
-        Toast.makeText(getApplicationContext(), "salut", Toast.LENGTH_SHORT).show();
         return super.onSearchRequested();
     }
 
@@ -246,6 +269,22 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public boolean onLongClick(View v)
                         {
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getParentFragment().getActivity().getApplicationContext());
+                            alertDialog.setTitle("salut");
+                            alertDialog.setItems(new String[] {"Afficher le Projet", "Modifier le Projet", "Supprimer le Projet"}, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    switch(which)
+                                    {
+                                        case 0:
+                                            break;
+                                    }
+                                }
+                            });
+                            alertDialog.create();
+                            alertDialog.show();
                             return false;
                         }
                     });

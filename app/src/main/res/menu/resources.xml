@@ -5,6 +5,7 @@
     <item android:id="@+id/action_newresource"
           android:icon="@drawable/ic_action_add"
           android:title="@string/action_newresource"
+          android:onClick="GotoNewPerson"
           android:showAsAction="always" />
 
     <item android:id="@+id/action_search"
