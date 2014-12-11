@@ -270,7 +270,9 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            //goto Project
+                            Intent mResourceIntent = new Intent(getActivity().getApplicationContext(), Project.class);
+                            mResourceIntent.putExtra("name", ((EnumProject)view.getTag()).Name);
+                            startActivityForResult(mResourceIntent, 1);
                         }
                     });
                     mProjectList.setOnLongClickListener(new View.OnLongClickListener()
