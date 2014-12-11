@@ -8,7 +8,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -81,9 +85,9 @@ public class Main extends Activity implements ActionBar.TabListener
     {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        final View modelRegister = getLayoutInflater().inflate(R.layout.model_newproject, null);
+        final View modelNewProject = getLayoutInflater().inflate(R.layout.model_newproject, null);
 
-        alertDialogBuilder.setView(modelRegister);
+        alertDialogBuilder.setView(modelNewProject);
         alertDialogBuilder.setCancelable(true);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
@@ -101,34 +105,16 @@ public class Main extends Activity implements ActionBar.TabListener
                     @Override
                     public void onClick(View v)
                     {
-                        ((TextView)modelRegister.findViewById(R.id.model_resourcesList_name)).setError("salut");
+                        ((TextView)modelNewProject.findViewById(R.id.model_taskList_name)).setError("salut");
                         ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
                         ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
-                        mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut"));
+                        mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut", false));
                         mResourceList.setAdapter(mResourceListAdapter);
                         alertDialog.cancel();
                     }
                 });
             }
         });
-        /*alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-            }
-        });
-        alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
-                ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
-                mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut"));
-                mResourceList.setAdapter(mResourceListAdapter);
-            }
-        });*/
         alertDialogBuilder.show();
     }
 
@@ -150,10 +136,33 @@ public class Main extends Activity implements ActionBar.TabListener
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
+                pickContactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+                startActivityForResult(pickContactIntent, 1);
             }
         });
         alertDialogBuilder.create();
         alertDialogBuilder.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == 1)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                Uri contactUri = data.getData();
+                String[] projection = {ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
+                Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null);
+                cursor.moveToFirst();
+
+                ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
+                ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
+                mResourceListAdapter.add(new EnumResource(getApplicationContext(), cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)), "salut", false));
+                mResourceList.setAdapter(mResourceListAdapter);
+            }
+        }
     }
 
     @Override
@@ -292,12 +301,24 @@ public class Main extends Activity implements ActionBar.TabListener
 
                 case 2:
                     rootView = inflater.inflate(R.layout.fragment_resources, container, false);
+                    ListView mResourcesList = (ListView) rootView.findViewById(R.id.ResourcesList);
 
                     ResourcesListAdapter mResoucesListAdapter = new ResourcesListAdapter(getActivity().getApplicationContext(), RESOURCESLIST);
                     mResoucesListAdapter.clear();
-                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application"));
+                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true));
+                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false));
+                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false));
 
-                    ((ListView) rootView.findViewById(R.id.ResourcesList)).setAdapter(mResoucesListAdapter);
+                    mResourcesList.setAdapter(mResoucesListAdapter);
+                    mResourcesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            Intent mResourceIntent = new Intent(getActivity().getApplicationContext(), Resource.class);
+                            startActivityForResult(mResourceIntent, 1);
+                        }
+                    });
                     return rootView;
 
                 case 3:

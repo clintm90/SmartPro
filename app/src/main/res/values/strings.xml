@@ -13,7 +13,7 @@
     <string name="cancel">Annuler</string>
     <string name="valid">Valider</string>
     <string name="action_more">More</string>
-    <string name="importcontact">Importer</string>
+    <string name="importcontact">Mes contacts</string>
     <string name="firstlastname">Nom et Prénom</string>
     <string name="title_activity_smart_pro">SmartPro</string>
     <string name="title_section1">Projets</string>
@@ -23,11 +23,15 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_main">Main</string>
+    <string name="active">Actif</string>
+    <string name="inactive">Inactif</string>
 
     <string-array name="sports">
         <item name="Football">Football</item>
         <item name="Handball">Handball</item>
         <item name="Basketball">Basketball</item>
     </string-array>
+
+    <string name="title_activity_resource">Resource</string>
 
 </resources>

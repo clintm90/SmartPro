@@ -3,10 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    >
 
     <TextView
-        android:id="@+id/model_resourcesList_name"
+        android:id="@+id/model_taskList_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -19,5 +20,41 @@
         android:paddingRight="5dp"
         android:paddingBottom="5dp"
         android:textColor="@android:color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/active"
+        android:id="@+id/model_resourcesList_state"
+        android:background="@drawable/balloon_blue"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:alpha="128"
+        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:id="@+id/model_resourcesList_person"
+        android:textColor="@color/darkgrey"
+        android:textSize="12sp"
+        android:alpha="128"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/balloon_grey"
+        android:visibility="visible"
+        android:layout_toStartOf="@+id/model_resourcesList_state"
+        android:layout_alignTop="@+id/model_resourcesList_state"
+        android:layout_toLeftOf="@+id/model_resourcesList_state"
+        android:layout_marginRight="10dp"/>
 
 </RelativeLayout>
