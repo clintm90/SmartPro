@@ -1,4 +1,4 @@
-package com.trackcell.smartpro;
+/*package com.trackcell.smartpro;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -56,4 +56,4 @@ public class ResourcesListAdapter extends ArrayAdapter<EnumResource>
 
         return rowView;
     }
-}
+}*/

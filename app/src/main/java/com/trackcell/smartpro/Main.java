@@ -119,9 +119,9 @@ public class Main extends Activity implements ActionBar.TabListener
                     {
                         ((TextView)modelNewProject.findViewById(R.id.model_resourcesList_name)).setError("salut");
                         ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
-                        ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
+                        /*ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
                         mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut", false, 1));
-                        mResourceList.setAdapter(mResourceListAdapter);
+                        mResourceList.setAdapter(mResourceListAdapter);*/
                         alertDialog.cancel();
                     }
                 });
@@ -413,8 +413,7 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            Toast.makeText(getActivity().getApplicationContext(), "salut", Toast.LENGTH_SHORT).show();
-                            return false;
+                            return true;
                         }
                     });
                     return rootView;
