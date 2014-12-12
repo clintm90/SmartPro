@@ -53,10 +53,12 @@ public class ResourcesExpandableListAdapter extends BaseExpandableListAdapter
 
         if(((EnumResource)getChild(groupPosition, childPosition)).Person == 0)
         {
+            mResourcesListPerson.setText(((EnumResource)getChild(groupPosition, childPosition)).Person);
             mResourcesListPerson.setVisibility(View.INVISIBLE);
         }
         else
         {
+            mResourcesListPerson.setText(((EnumResource)getChild(groupPosition, childPosition)).Person);
             mResourcesListPerson.setVisibility(View.VISIBLE);
         }
 
