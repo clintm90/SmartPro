@@ -374,7 +374,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataHeader.add(getString(R.string.users));
 
                     List<EnumResource> clients = new ArrayList<EnumResource>();
-                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Group Elephant Com. and Events", "My first application", true, 2));
+                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Group Elephant Com. and Events", "My first application", true, 0));
 
                     List<EnumResource> users = new ArrayList<EnumResource>();
                     users.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true, 2));

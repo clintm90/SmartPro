@@ -51,19 +51,26 @@ public class ResourcesExpandableListAdapter extends BaseExpandableListAdapter
 
         mResourcesListName.setText(((EnumResource)getChild(groupPosition, childPosition)).Name);
 
+        if(((EnumResource)getChild(groupPosition, childPosition)).Person == 0)
+        {
+            mResourcesListPerson.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            mResourcesListPerson.setVisibility(View.VISIBLE);
+        }
+
         if(((EnumResource)getChild(groupPosition, childPosition)).State)
         {
             mResourcesListState.setText(R.string.active);
             mResourcesListState.setBackgroundResource(R.drawable.balloon_blue);
-            //mResourcesListName.setTypeface(null, Typeface.BOLD);
-            mResourcesListPerson.setVisibility(View.VISIBLE);
+            mResourcesListName.setTypeface(null, Typeface.NORMAL);
         }
         else
         {
             mResourcesListState.setText(R.string.inactive);
             mResourcesListState.setBackgroundResource(R.drawable.balloon_red);
-            //mResourcesListName.setTypeface(null, Typeface.NORMAL);
-            mResourcesListPerson.setVisibility(View.INVISIBLE);
+            mResourcesListName.setTypeface(null, Typeface.NORMAL);
         }
 
         mResourcesListState.getBackground().setAlpha(128);
