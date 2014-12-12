@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".Main" >
+
+    <item android:id="@+id/action_newproject"
+          android:icon="@drawable/ic_action_add"
+          android:title="@string/action_newproject"
+          android:onClick="GotoNewProject"
+          android:showAsAction="always" />
+
+    <item android:id="@+id/action_more"
+          android:icon="@drawable/ic_action_more"
+          android:title="@string/action_more"
+          android:showAsAction="always">
+        <menu>
+            <item android:id="@+id/action_export"
+                  android:icon="@drawable/ic_action_export"
+                  android:title="@string/action_export"
+                  android:showAsAction="always"/>
+
+            <item android:id="@+id/action_about"
+                  android:icon="@drawable/ic_action_info"
+                  android:title="@string/action_about"
+                  android:showAsAction="always"/>
+        </menu>
+    </item>
+</menu>
