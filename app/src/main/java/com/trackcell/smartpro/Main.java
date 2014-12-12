@@ -315,15 +315,8 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataChild2.put(listDataHeader2.get(1), users2);
 
                     mProjectList.setAdapter(mProjectExpandableListAdapter);
-                    if(3 == 0)
-                    {
-                        mProjectListEmptyLabel.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        mProjectList.expandGroup(0);
-                        mProjectList.expandGroup(1);
-                    }
+                    mProjectList.expandGroup(0);
+                    mProjectList.expandGroup(1);
 
                     mProjectList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
                     {
@@ -351,8 +344,6 @@ public class Main extends Activity implements ActionBar.TabListener
                         {
                             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
                             {
-                                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                                int childPosition = ExpandableListView.getPackedPositionChild(id);
                                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                                 alertDialog.setItems(new String[]{getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
                                 {
@@ -449,6 +440,9 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
                         {
+                            if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
+                            {
+                            }
                             return true;
                         }
                     });
