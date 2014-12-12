@@ -28,7 +28,7 @@ public class ProjectListAdapter extends ArrayAdapter<EnumProject>
 
         View rowView = inflater.inflate(R.layout.model_projectlist, parent, false);
 
-        TextView projectListName = (TextView)rowView.findViewById(R.id.model_taskList_name);
+        TextView projectListName = (TextView)rowView.findViewById(R.id.model_resourcesList_name);
         TextView projectListDescription = (TextView)rowView.findViewById(R.id.model_projectList_description);
         TextView projectListState = (TextView)rowView.findViewById(R.id.model_projectList_state);
         TextView projectListDay = (TextView)rowView.findViewById(R.id.model_projectList_day);

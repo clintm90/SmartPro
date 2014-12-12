@@ -17,6 +17,8 @@
     <string name="action_about">A Propos&#8230;</string>
     <string name="projectname">Nom du Projet</string>
     <string name="projectdescription">Présentation</string>
+    <string name="clients">Clients</string>
+    <string name="users">Utilisateurs</string>
     <string name="task">Tâche</string>
     <string name="taskname">Nom de la tâche</string>
     <string name="cancel">Annuler</string>

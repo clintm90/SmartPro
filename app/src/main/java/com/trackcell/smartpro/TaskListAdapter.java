@@ -29,7 +29,7 @@ public class TaskListAdapter extends ArrayAdapter<EnumTask>
 
         View rowView = inflater.inflate(R.layout.model_tasklist, parent, false);
 
-        TextView taskListName = (TextView)rowView.findViewById(R.id.model_taskList_name);
+        TextView taskListName = (TextView)rowView.findViewById(R.id.model_resourcesList_name);
         TextView taskListDescription = (TextView)rowView.findViewById(R.id.model_taskList_description);
         TextView taskListDate = (TextView)rowView.findViewById(R.id.model_taskList_date);
         TextView taskListProject = (TextView)rowView.findViewById(R.id.model_taskList_project);

@@ -6,7 +6,7 @@
     android:paddingBottom="10dp">
 
     <TextView
-        android:id="@+id/model_taskList_name"
+        android:id="@+id/model_resourcesList_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -27,7 +27,7 @@
         android:textSize="12sp"
         android:text="My first application"
         android:singleLine="true"
-        android:layout_below="@+id/model_taskList_name"
+        android:layout_below="@+id/model_resourcesList_name"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:paddingLeft="5dp"
@@ -42,8 +42,8 @@
         android:text="En cours..."
         android:id="@+id/model_projectList_state"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/model_taskList_name"
-        android:layout_alignEnd="@+id/model_taskList_name"
+        android:layout_alignRight="@+id/model_resourcesList_name"
+        android:layout_alignEnd="@+id/model_resourcesList_name"
         android:background="@drawable/balloon_blue"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:text="Il reste 5 jour(s)"
         android:id="@+id/model_projectList_day"
-        android:layout_below="@+id/model_taskList_name"
+        android:layout_below="@+id/model_resourcesList_name"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"

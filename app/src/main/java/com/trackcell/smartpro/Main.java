@@ -22,11 +22,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Main extends Activity implements ActionBar.TabListener
@@ -113,10 +116,10 @@ public class Main extends Activity implements ActionBar.TabListener
                     @Override
                     public void onClick(View v)
                     {
-                        ((TextView)modelNewProject.findViewById(R.id.model_taskList_name)).setError("salut");
+                        ((TextView)modelNewProject.findViewById(R.id.model_resourcesList_name)).setError("salut");
                         ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
                         ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
-                        mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut", false));
+                        mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut", false, 1));
                         mResourceList.setAdapter(mResourceListAdapter);
                         alertDialog.cancel();
                     }
@@ -359,15 +362,31 @@ public class Main extends Activity implements ActionBar.TabListener
 
                 case 2:
                     rootView = inflater.inflate(R.layout.fragment_resources, container, false);
-                    ListView mResourcesList = (ListView) rootView.findViewById(R.id.ResourcesList);
+                    ExpandableListView mResourcesList = (ExpandableListView) rootView.findViewById(R.id.ResourcesList);
 
-                    ResourcesListAdapter mResoucesListAdapter = new ResourcesListAdapter(getActivity().getApplicationContext(), RESOURCESLIST);
+                    List<String> listDataHeader = new ArrayList<String>();
+                    HashMap<String, List<EnumResource>> listDataChild = new HashMap<String, List<EnumResource>>();
+
+                    listDataHeader.add(getString(R.string.clients));
+                    listDataHeader.add(getString(R.string.users));
+
+                    List<EnumResource> clients = new ArrayList<EnumResource>();
+                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true, 2));
+                    clients.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false, 1));
+                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false, 1));
+
+                    listDataChild.put(listDataHeader.get(0), clients);
+                    listDataChild.put(listDataHeader.get(1), clients);
+
+                    mResourcesList.setAdapter(new ResourcesExpandableListAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild));
+
+                    /*ResourcesListAdapter mResoucesListAdapter = new ResourcesListAdapter(getActivity().getApplicationContext(), RESOURCESLIST);
                     mResoucesListAdapter.clear();
                     mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true));
                     mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false));
                     mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false));
 
-                    mResourcesList.setAdapter(mResoucesListAdapter);
+                    mResourcesList.setAdapter(mResoucesListAdapter);*/
                     mResourcesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
                         @Override

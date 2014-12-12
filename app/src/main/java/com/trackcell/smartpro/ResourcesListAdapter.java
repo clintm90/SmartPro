@@ -29,7 +29,7 @@ public class ResourcesListAdapter extends ArrayAdapter<EnumResource>
 
         View rowView = inflater.inflate(R.layout.model_resourceslist, parent, false);
 
-        TextView resourcesListName = (TextView)rowView.findViewById(R.id.model_taskList_name);
+        TextView resourcesListName = (TextView)rowView.findViewById(R.id.model_resourcesList_name);
         TextView resourcesListState = (TextView)rowView.findViewById(R.id.model_resourcesList_state);
         TextView resourcesListPerson = (TextView)rowView.findViewById(R.id.model_resourcesList_person);
 
