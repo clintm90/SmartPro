@@ -35,11 +35,10 @@ import java.util.Locale;
 
 public class Main extends Activity implements ActionBar.TabListener
 {
-    private Context parent;
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
     int CurrentPage = 0;
-
+    private Context parent;
     private ListView mResourcesList;
 
     @Override
@@ -67,7 +66,7 @@ public class Main extends Activity implements ActionBar.TabListener
                 CurrentPage = position;
                 actionBar.setSelectedNavigationItem(position);
 
-                switch(position)
+                switch (position)
                 {
                     case 1:
                         break;
@@ -117,8 +116,8 @@ public class Main extends Activity implements ActionBar.TabListener
                     @Override
                     public void onClick(View v)
                     {
-                        ((TextView)modelNewProject.findViewById(R.id.model_resourcesList_name)).setError("salut");
-                        ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
+                        ((TextView) modelNewProject.findViewById(R.id.model_resourcesList_name)).setError("salut");
+                        ListView mResourceList = (ListView) findViewById(R.id.ResourcesList);
                         /*ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
                         mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut", false, 1));
                         mResourceList.setAdapter(mResourceListAdapter);*/
@@ -166,7 +165,7 @@ public class Main extends Activity implements ActionBar.TabListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == 1)
+        if (requestCode == 1)
         {
             if (resultCode == RESULT_OK)
             {
@@ -263,7 +262,7 @@ public class Main extends Activity implements ActionBar.TabListener
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
         {
-            switch(getArguments().getInt(ARG_SECTION_NUMBER))
+            switch (getArguments().getInt(ARG_SECTION_NUMBER))
             {
                 case 1:
                     inflater.inflate(R.menu.projects, menu);
@@ -288,13 +287,13 @@ public class Main extends Activity implements ActionBar.TabListener
 
             View rootView = null;
 
-            switch(getArguments().getInt(ARG_SECTION_NUMBER))
+            switch (getArguments().getInt(ARG_SECTION_NUMBER))
             {
                 case 1:
 
                     rootView = inflater.inflate(R.layout.fragment_project, container, false);
-                    ExpandableListView mProjectList = (ExpandableListView)rootView.findViewById(R.id.ProjectList);
-                    TextView mProjectListEmptyLabel = (TextView)rootView.findViewById(R.id.projectListEmptyLabel);
+                    ExpandableListView mProjectList = (ExpandableListView) rootView.findViewById(R.id.ProjectList);
+                    TextView mProjectListEmptyLabel = (TextView) rootView.findViewById(R.id.projectListEmptyLabel);
 
                     List<String> listDataHeader2 = new ArrayList<String>();
                     HashMap<String, List<EnumProject>> listDataChild2 = new HashMap<String, List<EnumProject>>();
@@ -305,7 +304,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataHeader2.add(getString(R.string.lateproject));
 
                     List<EnumProject> current = new ArrayList<EnumProject>();
-                    current.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
+                    current.add(new EnumProject(getActivity().getApplicationContext(), "First Sample Project", "My first application", EnumProject.CURRENT));
 
                     List<EnumProject> users2 = new ArrayList<EnumProject>();
                     users2.add(new EnumProject(getActivity().getApplicationContext(), "Event System", "A Best application", EnumProject.WAIT));
@@ -324,7 +323,7 @@ public class Main extends Activity implements ActionBar.TabListener
                         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
                         {
                             Intent intent = new Intent(getActivity(), Project.class);
-                            intent.putExtra("name", ((EnumProject)v.getTag()).Name);
+                            intent.putExtra("name", ((EnumProject) v.getTag()).Name);
                             getActivity().startActivityForResult(intent, 1);
                             return false;
                         }

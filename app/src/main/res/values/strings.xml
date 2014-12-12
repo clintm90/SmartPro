@@ -25,7 +25,7 @@
     <string name="noresource">Il n\'y à pas de ressource.</string>
     <string name="notask">Il n\'y à pas de tâche.</string>
     <string name="taskname">Nom de la tâche</string>
-    <string name="lateproject">Projet(s) en retard</string>
+    <string name="lateproject">Autres projets</string>
     <string name="cancel">Annuler</string>
     <string name="valid">Valider</string>
     <string name="action_more">More</string>
