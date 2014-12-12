@@ -300,31 +300,22 @@ public class Main extends Activity implements ActionBar.TabListener
 
                     ProjectExpandableListAdapter mProjectExpandableListAdapter = new ProjectExpandableListAdapter(getActivity().getApplicationContext(), listDataHeader2, listDataChild2);
 
-                    listDataHeader2.add(getString(R.string.clients));
+                    listDataHeader2.add(getString(R.string.currentproject));
                     listDataHeader2.add(getString(R.string.users));
 
-                    List<EnumProject> clients2 = new ArrayList<EnumProject>();
-                    clients2.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
+                    List<EnumProject> current = new ArrayList<EnumProject>();
+                    current.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
 
                     List<EnumProject> users2 = new ArrayList<EnumProject>();
-                    users2.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
                     users2.add(new EnumProject(getActivity().getApplicationContext(), "Event System", "A Best application", EnumProject.WAIT));
                     users2.add(new EnumProject(getActivity().getApplicationContext(), "Vertigo", "A free project managemenr", EnumProject.LATE));
 
-                    listDataChild2.put(listDataHeader2.get(0), clients2);
+                    listDataChild2.put(listDataHeader2.get(0), current);
                     listDataChild2.put(listDataHeader2.get(1), users2);
 
                     mProjectList.setAdapter(mProjectExpandableListAdapter);
                     mProjectList.expandGroup(0);
                     mProjectList.expandGroup(1);
-
-                    /*ProjectListAdapter mProjectListAdapter = new ProjectListAdapter(getActivity().getApplicationContext(), PROJECTLIST);
-                    mProjectListAdapter.clear();
-                    mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
-                    mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Event System", "A Best application", EnumProject.WAIT));
-                    mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Vertigo", "A free project managemenr", EnumProject.LATE));
-
-                    mProjectList.setAdapter(mProjectListAdapter);*/
 
                     mProjectList.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {

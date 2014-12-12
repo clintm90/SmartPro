@@ -20,6 +20,7 @@
     <string name="clients">Clients</string>
     <string name="users">Utilisateurs</string>
     <string name="task">Tâche</string>
+    <string name="currentproject">Projet en cours&#8230;</string>
     <string name="taskname">Nom de la tâche</string>
     <string name="cancel">Annuler</string>
     <string name="valid">Valider</string>
