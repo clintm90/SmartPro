@@ -23,6 +23,17 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
+            android:name=".Project"
+            android:icon="@null"
+            android:label="@string/title_activity_project"
+            android:logo="@android:color/transparent"
+            android:parentActivityName=".Main"
+            android:theme="@style/AppTheme.ActionBar.Back" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.trackcell.smartpro.Main" />
+        </activity>
+        <activity
             android:name=".Resource"
             android:icon="@null"
             android:label="@string/title_activity_resource"
@@ -34,12 +45,12 @@
                 android:value="com.trackcell.smartpro.Main" />
         </activity>
         <activity
-            android:name=".Project"
+            android:name=".Calendar"
             android:icon="@null"
-            android:label="@string/title_activity_project"
-            android:logo="@android:color/transparent"
+            android:label="@string/title_activity_calendar"
             android:parentActivityName=".Main"
-            android:theme="@style/AppTheme.ActionBar.Back">
+            android:logo="@android:color/transparent"
+            android:theme="@style/AppTheme.ActionBar.Back" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.trackcell.smartpro.Main" />

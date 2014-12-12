@@ -3,11 +3,17 @@
 
     <string name="app_name">SmartPro</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="action_save">Sauvegarder</string>
+    <string name="action_shareproject">Partager le projet</string>
+    <string name="action_deleteproject">Supprimer le projet</string>
+    <string name="action_woulddelete">Voulez-vous vraiment supprimer ce projet ?</string>
     <string name="action_newproject">Nouveau Projet</string>
     <string name="action_newresource">Nouvelle Ressource</string>
     <string name="action_newtask">Nouvelle tâche</string>
     <string name="action_search">Rechercher</string>
+    <string name="action_export">Exporter les projets</string>
+    <string name="action_about">A Propos&#8230;</string>
     <string name="projectname">Nom du Projet</string>
     <string name="projectdescription">Présentation</string>
     <string name="cancel">Annuler</string>
@@ -32,7 +38,8 @@
         <item name="Basketball">Basketball</item>
     </string-array>
 
-    <string name="title_activity_resource">Resource</string>
-    <string name="title_activity_project">Project</string>
+    <string name="title_activity_resource">Ressources</string>
+    <string name="title_activity_project">Projets</string>
+    <string name="title_activity_calendar">Calendrier</string>
 
 </resources>

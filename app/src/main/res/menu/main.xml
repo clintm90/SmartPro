@@ -2,7 +2,11 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".Main" >
 
-    <item android:id="@+id/action_newproject"
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:showAsAction="collapseActionView" />
+
+    <!--<item android:id="@+id/action_newproject"
           android:icon="@drawable/ic_action_add"
           android:title="@string/action_newproject"
           android:onClick="GotoNewProject"
@@ -11,5 +15,5 @@
     <item android:id="@+id/action_more"
           android:icon="@drawable/ic_action_more"
           android:title="@string/action_more"
-          android:showAsAction="always" />
+          android:showAsAction="always" />-->
 </menu>

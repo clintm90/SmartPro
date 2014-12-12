@@ -1,6 +1,7 @@
 package com.trackcell.smartpro;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,18 @@ public class Resource extends Activity
         setTitle(getIntent().getExtras().getString("name"));
     }
 
+    public void CloseActivity(MenuItem item)
+    {
+        setResult(RESULT_OK, new Intent().putExtra("result", 1));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        setResult(RESULT_OK, new Intent().putExtra("result", 1));
+        finish();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -28,11 +41,14 @@ public class Resource extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int id = item.getItemId();
-        if (id == R.id.action_settings)
+        switch (item.getItemId())
         {
-            return true;
+            case android.R.id.home:
+                CloseActivity(null);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

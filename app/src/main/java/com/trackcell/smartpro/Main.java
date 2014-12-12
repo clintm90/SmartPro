@@ -9,7 +9,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -145,6 +144,12 @@ public class Main extends Activity implements ActionBar.TabListener
         alertDialogBuilder.show();
     }
 
+    public void GotoCalendar(MenuItem item)
+    {
+        Intent intent = new Intent(Main.this, Calendar.class);
+        startActivityForResult(intent, 1);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -152,7 +157,9 @@ public class Main extends Activity implements ActionBar.TabListener
         {
             if (resultCode == RESULT_OK)
             {
-                Uri contactUri = data.getData();
+                overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+
+                /*Uri contactUri = data.getData();
                 String[] projection = {ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
                 Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null);
                 cursor.moveToFirst();
@@ -160,9 +167,18 @@ public class Main extends Activity implements ActionBar.TabListener
                 ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
                 ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
                 mResourceListAdapter.add(new EnumResource(getApplicationContext(), cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)), "salut", false));
-                mResourceList.setAdapter(mResourceListAdapter);
+                mResourceList.setAdapter(mResourceListAdapter);*/
+            }
+            else
+            {
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstance)
+    {
+        super.onSaveInstanceState(savedInstance);
     }
 
     @Override
@@ -172,9 +188,15 @@ public class Main extends Activity implements ActionBar.TabListener
     }
 
     @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        //getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -229,7 +251,7 @@ public class Main extends Activity implements ActionBar.TabListener
             switch(getArguments().getInt(ARG_SECTION_NUMBER))
             {
                 case 1:
-                    inflater.inflate(R.menu.main, menu);
+                    inflater.inflate(R.menu.projects, menu);
                     break;
 
                 case 2:
@@ -265,24 +287,24 @@ public class Main extends Activity implements ActionBar.TabListener
                     mProjectListAdapter.add(new EnumProject(getActivity().getApplicationContext(), "Vertigo", "A free project managemenr", EnumProject.LATE));
 
                     mProjectList.setAdapter(mProjectListAdapter);
+
                     mProjectList.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            Intent mResourceIntent = new Intent(getActivity().getApplicationContext(), Project.class);
-                            mResourceIntent.putExtra("name", ((EnumProject)view.getTag()).Name);
-                            startActivityForResult(mResourceIntent, 1);
+                            Intent intent = new Intent(getActivity(), Project.class);
+                            intent.putExtra("name", ((EnumProject)view.getTag()).Name);
+                            getActivity().startActivityForResult(intent, 1);
                         }
                     });
-                    mProjectList.setOnLongClickListener(new View.OnLongClickListener()
+                    mProjectList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
                     {
                         @Override
-                        public boolean onLongClick(View v)
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getParentFragment().getActivity().getApplicationContext());
-                            alertDialog.setTitle("salut");
-                            alertDialog.setItems(new String[] {"Afficher le Projet", "Modifier le Projet", "Supprimer le Projet"}, new DialogInterface.OnClickListener()
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            alertDialog.setItems(new String[] {getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
@@ -291,12 +313,35 @@ public class Main extends Activity implements ActionBar.TabListener
                                     {
                                         case 0:
                                             break;
+
+                                        case 1:
+                                            AlertDialog.Builder alertDialogDelete = new AlertDialog.Builder(getActivity());
+                                            alertDialog.setTitle(getString(R.string.action_deleteproject));
+                                            alertDialog.setMessage(getString(R.string.action_woulddelete));
+                                            alertDialog.setCancelable(false);
+                                            alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+                                            {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which)
+                                                {
+                                                }
+                                            });
+                                            alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+                                            {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which)
+                                                {
+                                                }
+                                            });
+                                            alertDialogDelete.create();
+                                            alertDialogDelete.show();
+                                            break;
                                     }
                                 }
                             });
                             alertDialog.create();
                             alertDialog.show();
-                            return false;
+                            return true;
                         }
                     });
                     return rootView;
@@ -317,10 +362,10 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            Intent mResourceIntent = new Intent(getActivity().getApplicationContext(), Resource.class);
+                            Intent mResourceIntent = new Intent(getActivity(), Resource.class);
                             mResourceIntent.putExtra("name", ((EnumResource)view.getTag()).Name);
                             mResourceIntent.putExtra("id", "1");
-                            startActivityForResult(mResourceIntent, 1);
+                            getActivity().startActivityForResult(mResourceIntent, 1);
                         }
                     });
                     return rootView;
