@@ -385,23 +385,19 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataChild.put(listDataHeader.get(1), users);
 
                     mResourcesList.setAdapter(mResourcesExpandableListAdapter);
+                    mResourcesList.expandGroup(0);
+                    mResourcesList.expandGroup(1);
 
-                    /*ResourcesListAdapter mResoucesListAdapter = new ResourcesListAdapter(getActivity().getApplicationContext(), RESOURCESLIST);
-                    mResoucesListAdapter.clear();
-                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true));
-                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false));
-                    mResoucesListAdapter.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false));
-
-                    mResourcesList.setAdapter(mResoucesListAdapter);*/
-                    mResourcesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    mResourcesList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
                     {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
                         {
                             Intent mResourceIntent = new Intent(getActivity(), Resource.class);
-                            mResourceIntent.putExtra("name", ((EnumResource)view.getTag()).Name);
+                            mResourceIntent.putExtra("name", ((EnumResource) v.getTag()).Name);
                             mResourceIntent.putExtra("id", "1");
                             getActivity().startActivityForResult(mResourceIntent, 1);
+                            return false;
                         }
                     });
                     return rootView;
