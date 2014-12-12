@@ -70,37 +70,6 @@ public class ProjectExpandableListAdapter extends BaseExpandableListAdapter
                 projectListState.setBackgroundResource(R.drawable.balloon_red);
         }
 
-        /*TextView mResourcesListName = (TextView) convertView.findViewById(R.id.model_resourcesList_name);
-        TextView mResourcesListPerson = (TextView) convertView.findViewById(R.id.model_resourcesList_person);
-        TextView mResourcesListState = (TextView) convertView.findViewById(R.id.model_resourcesList_state);
-
-        mResourcesListName.setText(((EnumResource)getChild(groupPosition, childPosition)).Name);
-        mResourcesListPerson.setText(String.valueOf(((EnumResource)getChild(groupPosition, childPosition)).Person));
-
-        if(((EnumResource)getChild(groupPosition, childPosition)).Person == 0)
-        {
-            mResourcesListPerson.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            mResourcesListPerson.setVisibility(View.VISIBLE);
-        }
-
-        if(((EnumResource)getChild(groupPosition, childPosition)).State)
-        {
-            mResourcesListState.setText(R.string.active);
-            mResourcesListState.setBackgroundResource(R.drawable.balloon_blue);
-            mResourcesListName.setTypeface(null, Typeface.NORMAL);
-        }
-        else
-        {
-            mResourcesListState.setText(R.string.inactive);
-            mResourcesListState.setBackgroundResource(R.drawable.balloon_red);
-            mResourcesListName.setTypeface(null, Typeface.NORMAL);
-        }
-
-        mResourcesListState.getBackground().setAlpha(128);*/
-
         convertView.setTag(getChild(groupPosition, childPosition));
         return convertView;
     }
