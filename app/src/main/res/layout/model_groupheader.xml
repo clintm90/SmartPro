@@ -9,9 +9,11 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/textView"
-        android:paddingLeft="30dp"
+        android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textColor="@android:color/black"
-        android:background="@color/lightgrey"/>
+        android:background="#EEEEEE"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="normal"/>
 </LinearLayout>

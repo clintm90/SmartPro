@@ -31,7 +31,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:paddingRight="160dp"
         android:maxLines="3"
         android:textColor="@android:color/black"
         android:paddingBottom="10dp"/>

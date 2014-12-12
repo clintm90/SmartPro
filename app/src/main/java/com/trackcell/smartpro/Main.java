@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -367,18 +368,23 @@ public class Main extends Activity implements ActionBar.TabListener
                     List<String> listDataHeader = new ArrayList<String>();
                     HashMap<String, List<EnumResource>> listDataChild = new HashMap<String, List<EnumResource>>();
 
+                    ResourcesExpandableListAdapter mResourcesExpandableListAdapter = new ResourcesExpandableListAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild);
+
                     listDataHeader.add(getString(R.string.clients));
                     listDataHeader.add(getString(R.string.users));
 
                     List<EnumResource> clients = new ArrayList<EnumResource>();
-                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true, 2));
-                    clients.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false, 1));
-                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false, 1));
+                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Group Elephant Com. and Events", "My first application", true, 2));
+
+                    List<EnumResource> users = new ArrayList<EnumResource>();
+                    users.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true, 2));
+                    users.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false, 1));
+                    users.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false, 1));
 
                     listDataChild.put(listDataHeader.get(0), clients);
-                    listDataChild.put(listDataHeader.get(1), clients);
+                    listDataChild.put(listDataHeader.get(1), users);
 
-                    mResourcesList.setAdapter(new ResourcesExpandableListAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild));
+                    mResourcesList.setAdapter(mResourcesExpandableListAdapter);
 
                     /*ResourcesListAdapter mResoucesListAdapter = new ResourcesListAdapter(getActivity().getApplicationContext(), RESOURCESLIST);
                     mResoucesListAdapter.clear();
@@ -406,9 +412,9 @@ public class Main extends Activity implements ActionBar.TabListener
 
                     final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), TASKLIST);
                     mTaskListAdapter.clear();
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application"));
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application"));
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application"));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application", new Date()));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application", new Date()));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application", new Date()));
 
                     mTaskList.setAdapter(mTaskListAdapter);
                     mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener()
