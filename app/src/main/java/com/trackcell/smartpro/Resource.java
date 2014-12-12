@@ -15,7 +15,14 @@ public class Resource extends Activity
 
         setContentView(R.layout.activity_resource);
 
-        setTitle(getIntent().getExtras().getString("name"));
+        try
+        {
+            setTitle(getIntent().getExtras().getString("name"));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void CloseActivity(MenuItem item)

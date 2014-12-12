@@ -388,6 +388,14 @@ public class Main extends Activity implements ActionBar.TabListener
                     mResourcesList.expandGroup(0);
                     mResourcesList.expandGroup(1);
 
+                    mResourcesList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
+                    {
+                        @Override
+                        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
+                        {
+                            return false;
+                        }
+                    });
                     mResourcesList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
                     {
                         @Override
@@ -409,7 +417,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), TASKLIST);
                     mTaskListAdapter.clear();
                     mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application", new Date()));
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application", new Date()));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application", new Date(0)));
                     mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application", new Date()));
 
                     mTaskList.setAdapter(mTaskListAdapter);
