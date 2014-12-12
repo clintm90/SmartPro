@@ -150,7 +150,7 @@ public class Main extends Activity implements ActionBar.TabListener
             {
                 Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
                 pickContactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-                startActivityForResult(pickContactIntent, 1);
+                startActivityForResult(pickContactIntent, 0);
             }
         });
         alertDialogBuilder.create();
@@ -166,7 +166,7 @@ public class Main extends Activity implements ActionBar.TabListener
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == 1)
+        if(requestCode == 1)
         {
             if (resultCode == RESULT_OK)
             {
@@ -293,7 +293,8 @@ public class Main extends Activity implements ActionBar.TabListener
                 case 1:
 
                     rootView = inflater.inflate(R.layout.fragment_project, container, false);
-                    ExpandableListView mProjectList = ((ExpandableListView) rootView.findViewById(R.id.ProjectList));
+                    ExpandableListView mProjectList = (ExpandableListView)rootView.findViewById(R.id.ProjectList);
+                    TextView mProjectListEmptyLabel = (TextView)rootView.findViewById(R.id.projectListEmptyLabel);
 
                     List<String> listDataHeader2 = new ArrayList<String>();
                     HashMap<String, List<EnumProject>> listDataChild2 = new HashMap<String, List<EnumProject>>();
@@ -314,8 +315,15 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataChild2.put(listDataHeader2.get(1), users2);
 
                     mProjectList.setAdapter(mProjectExpandableListAdapter);
-                    mProjectList.expandGroup(0);
-                    mProjectList.expandGroup(1);
+                    if(3 == 0)
+                    {
+                        mProjectListEmptyLabel.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        mProjectList.expandGroup(0);
+                        mProjectList.expandGroup(1);
+                    }
 
                     mProjectList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
                     {
@@ -341,44 +349,49 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                            alertDialog.setItems(new String[] {getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
+                            if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
                             {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which)
+                                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                                int childPosition = ExpandableListView.getPackedPositionChild(id);
+                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                                alertDialog.setItems(new String[]{getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
                                 {
-                                    switch(which)
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which)
                                     {
-                                        case 0:
-                                            break;
+                                        switch (which)
+                                        {
+                                            case 0:
+                                                break;
 
-                                        case 1:
-                                            AlertDialog.Builder alertDialogDelete = new AlertDialog.Builder(getActivity());
-                                            alertDialog.setTitle(getString(R.string.action_deleteproject));
-                                            alertDialog.setMessage(getString(R.string.action_woulddelete));
-                                            alertDialog.setCancelable(false);
-                                            alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-                                            {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which)
+                                            case 1:
+                                                AlertDialog.Builder alertDialogDelete = new AlertDialog.Builder(getActivity());
+                                                alertDialog.setTitle(getString(R.string.action_deleteproject));
+                                                alertDialog.setMessage(getString(R.string.action_woulddelete));
+                                                alertDialog.setCancelable(false);
+                                                alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
                                                 {
-                                                }
-                                            });
-                                            alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
-                                            {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which)
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which)
+                                                    {
+                                                    }
+                                                });
+                                                alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
                                                 {
-                                                }
-                                            });
-                                            alertDialogDelete.create();
-                                            alertDialogDelete.show();
-                                            break;
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which)
+                                                    {
+                                                    }
+                                                });
+                                                alertDialogDelete.create();
+                                                alertDialogDelete.show();
+                                                break;
+                                        }
                                     }
-                                }
-                            });
-                            alertDialog.create();
-                            alertDialog.show();
+                                });
+                                alertDialog.create();
+                                alertDialog.show();
+                            }
                             return true;
                         }
                     });

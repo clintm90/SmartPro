@@ -22,7 +22,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="12dp"
-        android:inputType="textCapSentences"/>
+        android:inputType="textCapWords|textNoSuggestions"/>
 
     <Switch
         android:layout_width="fill_parent"

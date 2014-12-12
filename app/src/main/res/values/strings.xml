@@ -21,6 +21,9 @@
     <string name="users">Utilisateurs</string>
     <string name="task">Tâche</string>
     <string name="currentproject">Projet(s) en cours&#8230;</string>
+    <string name="noproject">Il n\'y à pas de projet.</string>
+    <string name="noresource">Il n\'y à pas de ressource.</string>
+    <string name="notask">Il n\'y à pas de tâche.</string>
     <string name="taskname">Nom de la tâche</string>
     <string name="lateproject">Projet(s) en retard</string>
     <string name="cancel">Annuler</string>
