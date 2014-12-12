@@ -8,6 +8,7 @@
     <string name="action_shareproject">Partager le projet</string>
     <string name="action_deleteproject">Supprimer le projet</string>
     <string name="action_woulddelete">Voulez-vous vraiment supprimer ce projet ?</string>
+    <string name="action_delete">Supprimer</string>
     <string name="action_newproject">Nouveau Projet</string>
     <string name="action_newresource">Nouvelle Ressource</string>
     <string name="action_newtask">Nouvelle tâche</string>
@@ -16,6 +17,8 @@
     <string name="action_about">A Propos&#8230;</string>
     <string name="projectname">Nom du Projet</string>
     <string name="projectdescription">Présentation</string>
+    <string name="task">Tâche</string>
+    <string name="taskname">Nom de la tâche</string>
     <string name="cancel">Annuler</string>
     <string name="valid">Valider</string>
     <string name="action_more">More</string>

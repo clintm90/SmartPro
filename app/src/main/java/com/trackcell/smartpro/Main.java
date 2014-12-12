@@ -90,7 +90,16 @@ public class Main extends Activity implements ActionBar.TabListener
         alertDialogBuilder.setCancelable(true);
 
         final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialogBuilder.setPositiveButton(getString(R.string.valid), null);
+        alertDialogBuilder.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Intent intent = new Intent(getApplicationContext(), Project.class);
+                intent.putExtra("name", ((TextView) modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString());
+                startActivityForResult(intent, 1);
+            }
+        });
         alertDialogBuilder.setNegativeButton(getString(R.string.cancel), null);
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
         {
@@ -159,6 +168,7 @@ public class Main extends Activity implements ActionBar.TabListener
             {
                 overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
 
+                //region old contact grab
                 /*Uri contactUri = data.getData();
                 String[] projection = {ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
                 Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null);
@@ -168,6 +178,7 @@ public class Main extends Activity implements ActionBar.TabListener
                 ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
                 mResourceListAdapter.add(new EnumResource(getApplicationContext(), cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)), "salut", false));
                 mResourceList.setAdapter(mResourceListAdapter);*/
+                //endregion
             }
             else
             {
@@ -265,7 +276,7 @@ public class Main extends Activity implements ActionBar.TabListener
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             final ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
             ArrayList<EnumResource> RESOURCESLIST = new ArrayList<EnumResource>();
@@ -372,12 +383,43 @@ public class Main extends Activity implements ActionBar.TabListener
 
                 case 3:
                     rootView = inflater.inflate(R.layout.fragment_task, container, false);
+                    final ListView mTaskList = (ListView) rootView.findViewById(R.id.TaskList);
 
-                    TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), TASKLIST);
+                    final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), TASKLIST);
                     mTaskListAdapter.clear();
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), "Manger", "My first application"));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application"));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application"));
+                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application"));
 
-                    ((ListView) rootView.findViewById(R.id.TaskList)).setAdapter(mTaskListAdapter);
+                    mTaskList.setAdapter(mTaskListAdapter);
+                    mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            final View modelTask = inflater.inflate(R.layout.model_task, null);
+                            alertDialog.setView(modelTask);
+                            alertDialog.setNegativeButton(getString(R.string.action_delete), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    mTaskListAdapter.clear();
+                                    mTaskList.setAdapter(mTaskListAdapter);
+                                }
+                            });
+                            alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                }
+                            });
+                            alertDialog.create();
+                            alertDialog.show();
+                        }
+                    });
                     return rootView;
 
                 default:
