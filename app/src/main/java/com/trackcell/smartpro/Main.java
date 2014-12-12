@@ -393,7 +393,7 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
                         {
-                            return false;
+                            return true;
                         }
                     });
                     mResourcesList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
@@ -405,6 +405,15 @@ public class Main extends Activity implements ActionBar.TabListener
                             mResourceIntent.putExtra("name", ((EnumResource) v.getTag()).Name);
                             mResourceIntent.putExtra("id", "1");
                             getActivity().startActivityForResult(mResourceIntent, 1);
+                            return false;
+                        }
+                    });
+                    mResourcesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+                    {
+                        @Override
+                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            Toast.makeText(getActivity().getApplicationContext(), "salut", Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     });
