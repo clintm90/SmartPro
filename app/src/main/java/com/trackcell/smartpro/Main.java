@@ -301,7 +301,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     ProjectExpandableListAdapter mProjectExpandableListAdapter = new ProjectExpandableListAdapter(getActivity().getApplicationContext(), listDataHeader2, listDataChild2);
 
                     listDataHeader2.add(getString(R.string.currentproject));
-                    listDataHeader2.add(getString(R.string.users));
+                    listDataHeader2.add(getString(R.string.lateproject));
 
                     List<EnumProject> current = new ArrayList<EnumProject>();
                     current.add(new EnumProject(getActivity().getApplicationContext(), "Sample Project", "My first application", EnumProject.CURRENT));
@@ -317,14 +317,23 @@ public class Main extends Activity implements ActionBar.TabListener
                     mProjectList.expandGroup(0);
                     mProjectList.expandGroup(1);
 
-                    mProjectList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    mProjectList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
                     {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
                         {
                             Intent intent = new Intent(getActivity(), Project.class);
-                            intent.putExtra("name", ((EnumProject)view.getTag()).Name);
+                            intent.putExtra("name", ((EnumProject)v.getTag()).Name);
                             getActivity().startActivityForResult(intent, 1);
+                            return false;
+                        }
+                    });
+                    mProjectList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
+                    {
+                        @Override
+                        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
+                        {
+                            return true;
                         }
                     });
                     mProjectList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
