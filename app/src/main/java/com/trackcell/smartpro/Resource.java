@@ -23,6 +23,8 @@ public class Resource extends Activity
         {
             e.printStackTrace();
         }
+
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
     }
 
     public void CloseActivity(MenuItem item)

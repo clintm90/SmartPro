@@ -53,6 +53,7 @@ public class ProjectExpandableListAdapter extends BaseExpandableListAdapter
         projectListName.setText(((EnumProject)getChild(groupPosition, childPosition)).Name);
         projectListDescription.setText(((EnumProject)getChild(groupPosition, childPosition)).Description);
         projectListDay.setText("3 Personnes");
+        projectListName.setTypeface(null, Typeface.NORMAL);
 
         switch(((EnumProject)getChild(groupPosition, childPosition)).State)
         {
