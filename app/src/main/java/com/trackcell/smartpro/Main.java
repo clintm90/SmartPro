@@ -505,21 +505,20 @@ public class Main extends Activity implements ActionBar.TabListener
 
                     if(mCustomers.size() == 0 && mUsers.size() == 0)
                     {
-                        mResourcesList.setAdapter(mResourcesExpandableListAdapter);
+                        //mResourcesList.setAdapter(mResourcesExpandableListAdapter);
                         mResourcesListEmptyLabel.setVisibility(View.VISIBLE);
+                        mResourcesList.setVisibility(View.INVISIBLE);
                     }
-                    else
-                    {
-                        listDataHeader.add(getString(R.string.clients));
-                        listDataHeader.add(getString(R.string.users));
 
-                        listDataChild.put(listDataHeader.get(0), mCustomers);
-                        listDataChild.put(listDataHeader.get(1), mUsers);
+                    listDataHeader.add(getString(R.string.clients));
+                    listDataHeader.add(getString(R.string.users));
 
-                        mResourcesList.setAdapter(mResourcesExpandableListAdapter);
-                        mResourcesList.expandGroup(0);
-                        mResourcesList.expandGroup(1);
-                    }
+                    listDataChild.put(listDataHeader.get(0), mCustomers);
+                    listDataChild.put(listDataHeader.get(1), mUsers);
+
+                    mResourcesList.setAdapter(mResourcesExpandableListAdapter);
+                    mResourcesList.expandGroup(0);
+                    mResourcesList.expandGroup(1);
 
                     mResourcesList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
                     {
@@ -532,12 +531,35 @@ public class Main extends Activity implements ActionBar.TabListener
                     mResourcesList.setOnChildClickListener(new ExpandableListView.OnChildClickListener()
                     {
                         @Override
-                        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
+                        public boolean onChildClick(ExpandableListView parent, final View v, int groupPosition, int childPosition, long id)
                         {
-                            Intent mResourceIntent = new Intent(getActivity(), Resource.class);
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            final View modelResource = inflater.inflate(R.layout.model_resource, null);
+                            alertDialog.setView(modelResource);
+                            alertDialog.setNegativeButton(getString(R.string.action_delete), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.MainContent);
+                                    mDBSmartPro.RemoveResource(((EnumTask) v.getTag()).ID);
+                                    mViewPager.setAdapter(mViewPager.getAdapter());
+                                    mViewPager.setCurrentItem(1);
+                                }
+                            });
+                            alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                }
+                            });
+                            alertDialog.create();
+                            alertDialog.show();
+                            /*Intent mResourceIntent = new Intent(getActivity(), Resource.class);
                             mResourceIntent.putExtra("name", ((EnumResource) v.getTag()).Name);
                             mResourceIntent.putExtra("id", "1");
-                            getActivity().startActivityForResult(mResourceIntent, 1);
+                            getActivity().startActivityForResult(mResourceIntent, 1);*/
                             return false;
                         }
                     });

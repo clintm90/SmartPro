@@ -23,6 +23,7 @@
     <string name="clients">Clients</string>
     <string name="users">Utilisateurs</string>
     <string name="task">Tâche</string>
+    <string name="resource">Ressource</string>
     <string name="currentproject">Projet(s) en cours…</string>
     <string name="noproject">Il n\'y à pas de projet.</string>
     <string name="noresource">Il n\'y à pas de ressource.</string>
