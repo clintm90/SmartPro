@@ -119,7 +119,7 @@ public class DBSmartPro extends SQLiteOpenHelper
         return mRTS;
     }
 
-    public void RemoveResource(int id)
+    public void RemoveTask(int id)
     {
         SQLiteDatabase mDatabase = getReadableDatabase();
         mDatabase.execSQL("DELETE FROM \"Task\" WHERE ID=\""+String.valueOf(id)+"\";");

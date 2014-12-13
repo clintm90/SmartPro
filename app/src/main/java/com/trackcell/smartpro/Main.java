@@ -197,9 +197,42 @@ public class Main extends Activity implements ActionBar.TabListener
 
     public void GotoNewTask(MenuItem item)
     {
-        mDBSmartPro.NewTask(false, "Une tâche de plus", "Ma nouvelle tâche", new Date(1418474890));
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(2);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        final View modelNewTask = getLayoutInflater().inflate(R.layout.model_newtask, null);
+
+        if(item == null)
+        {
+            ((EditText)modelNewTask.findViewById(R.id.model_newtask_name)).setError(getString(R.string.fillfield));
+        }
+
+        alertDialogBuilder.setView(modelNewTask);
+        alertDialogBuilder.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                if(((EditText)modelNewTask.findViewById(R.id.model_newtask_name)).getText().toString().trim().equals(""))
+                {
+                    GotoNewTask(null);
+                }
+                else
+                {
+                    mDBSmartPro.NewTask(false, ((EditText)modelNewTask.findViewById(R.id.model_newtask_name)).getText().toString(), ((EditText)modelNewTask.findViewById(R.id.model_newtask_description)).getText().toString(), new Date(1418474890));
+                    mViewPager.setAdapter(mSectionsPagerAdapter);
+                    mViewPager.setCurrentItem(2);
+                }
+            }
+        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+        alertDialogBuilder.create();
+        alertDialogBuilder.show();
     }
 
     public void GotoCalendar(MenuItem item)
@@ -431,21 +464,33 @@ public class Main extends Activity implements ActionBar.TabListener
                 case 2:
                     rootView = inflater.inflate(R.layout.fragment_resources, container, false);
                     ExpandableListView mResourcesList = (ExpandableListView) rootView.findViewById(R.id.ResourcesList);
+                    TextView mResourcesListEmptyLabel = (TextView) rootView.findViewById(R.id.resourcesListEmptyLabel);
 
                     List<String> listDataHeader = new ArrayList<String>();
                     HashMap<String, List<EnumResource>> listDataChild = new HashMap<String, List<EnumResource>>();
 
                     ResourcesExpandableListAdapter mResourcesExpandableListAdapter = new ResourcesExpandableListAdapter(getActivity().getApplicationContext(), listDataHeader, listDataChild);
 
-                    listDataHeader.add(getString(R.string.clients));
-                    listDataHeader.add(getString(R.string.users));
+                    List<EnumResource> mCustomers = mDBSmartPro.GetCustomers();
+                    List<EnumResource> mUsers = mDBSmartPro.GetUsers();
 
-                    listDataChild.put(listDataHeader.get(0), mDBSmartPro.GetCustomers());
-                    listDataChild.put(listDataHeader.get(1), mDBSmartPro.GetUsers());
+                    if(mCustomers.size() == 0 && mUsers.size() == 0)
+                    {
+                        mResourcesList.setAdapter(mResourcesExpandableListAdapter);
+                        mResourcesListEmptyLabel.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        listDataHeader.add(getString(R.string.clients));
+                        listDataHeader.add(getString(R.string.users));
 
-                    mResourcesList.setAdapter(mResourcesExpandableListAdapter);
-                    mResourcesList.expandGroup(0);
-                    mResourcesList.expandGroup(1);
+                        listDataChild.put(listDataHeader.get(0), mCustomers);
+                        listDataChild.put(listDataHeader.get(1), mUsers);
+
+                        mResourcesList.setAdapter(mResourcesExpandableListAdapter);
+                        mResourcesList.expandGroup(0);
+                        mResourcesList.expandGroup(1);
+                    }
 
                     mResourcesList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
                     {
@@ -508,7 +553,10 @@ public class Main extends Activity implements ActionBar.TabListener
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
-                                    mDBSmartPro.RemoveResource(((EnumTask) view.getTag()).ID);
+                                    ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.MainContent);
+                                    mDBSmartPro.RemoveTask(((EnumTask) view.getTag()).ID);
+                                    mViewPager.setAdapter(mViewPager.getAdapter());
+                                    mViewPager.setCurrentItem(2);
                                 }
                             });
                             alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
