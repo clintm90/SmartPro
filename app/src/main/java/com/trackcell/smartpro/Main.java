@@ -101,6 +101,12 @@ public class Main extends Activity implements ActionBar.TabListener
         }
     }
 
+    public void GotoAbout(MenuItem item)
+    {
+        Intent mAbout = new Intent(this, About.class);
+        startActivityForResult(mAbout, 1);
+    }
+
     public void GotoNewProject(MenuItem item)
     {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

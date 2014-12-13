@@ -54,6 +54,6 @@
     <string name="title_activity_resource">Ressources</string>
     <string name="title_activity_project">Projets</string>
     <string name="title_activity_calendar">Calendrier</string>
-    <string name="title_activity_about">About</string>
+    <string name="title_activity_about">A Propos&#8230;</string>
 
 </resources>
