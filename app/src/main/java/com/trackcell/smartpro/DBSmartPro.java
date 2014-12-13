@@ -6,6 +6,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,12 +59,13 @@ public class DBSmartPro extends SQLiteOpenHelper
         }
     }
 
-    public boolean NewTask(String name, String description, String date)
+    public boolean NewTask(boolean isEnded, String name, String description, Date date)
     {
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext.getApplicationContext());
         try
         {
             SQLiteDatabase mDatabase = getWritableDatabase();
-            mDatabase.execSQL("INSERT INTO \"Task\" VALUES (NULL,\""+name+"\",\""+description+"\",\""+date+"\",\"false\");");
+            mDatabase.execSQL("INSERT INTO \"Task\" VALUES (NULL,\""+name+"\",\""+description+"\",\""+dateFormat.format(date)+"\",\""+Boolean.valueOf(isEnded)+"\");");
             return true;
         }
         catch(Exception e)
@@ -81,7 +83,7 @@ public class DBSmartPro extends SQLiteOpenHelper
 
         while(result.moveToNext())
         {
-            mRTS.add(new EnumTask(mContext, false, result.getString(1), result.getString(2), new Date(0)));
+            mRTS.add(new EnumTask(mContext, result.getInt(0), Boolean.valueOf(result.getString(4)), result.getString(1), result.getString(2), new Date(12313123)));
         }
 
         return mRTS;
@@ -115,5 +117,11 @@ public class DBSmartPro extends SQLiteOpenHelper
         }
 
         return mRTS;
+    }
+
+    public void RemoveResource(int id)
+    {
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        mDatabase.execSQL("DELETE FROM \"Task\" WHERE ID=\""+String.valueOf(id)+"\";");
     }
 }

@@ -5,6 +5,7 @@
     <item android:id="@+id/action_newtask"
           android:icon="@drawable/ic_action_add"
           android:title="@string/action_newtask"
+          android:onClick="GotoNewTask"
           android:showAsAction="always" />
 
     <item android:id="@+id/action_calendar"

@@ -17,6 +17,7 @@
     <string name="action_about">A Propos&#8230;</string>
     <string name="projectname">Nom du Projet</string>
     <string name="projectdescription">Présentation</string>
+    <string name="fillfield">"Veuillez remplir ce champs"</string>
     <string name="clients">Clients</string>
     <string name="users">Utilisateurs</string>
     <string name="task">Tâche</string>
@@ -42,10 +43,12 @@
     <string name="active">Actif</string>
     <string name="inactive">Inactif</string>
 
-    <string-array name="sports">
-        <item name="Football">Football</item>
-        <item name="Handball">Handball</item>
-        <item name="Basketball">Basketball</item>
+    <string name="client">Client</string>
+    <string-array name="job">
+        <item name="owner">Chef de projet</item>
+        <item name="contributor">Contributeur</item>
+        <item name="user">Utilisateur</item>
+        <item name="customer">Client</item>
     </string-array>
 
     <string name="title_activity_resource">Ressources</string>

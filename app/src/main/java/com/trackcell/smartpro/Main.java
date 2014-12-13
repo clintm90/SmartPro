@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -22,18 +23,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class Main extends Activity implements ActionBar.TabListener
 {
+    DBSmartPro mDBSmartPro;
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private Context parent;
@@ -47,6 +53,8 @@ public class Main extends Activity implements ActionBar.TabListener
         parent = getApplicationContext();
 
         setContentView(R.layout.activity_main);
+
+        mDBSmartPro = new DBSmartPro(getApplicationContext(), "SmartPro.db", null, 1, null);
 
         //region first sqlite implement
         /*mDatabase = openOrCreateDatabase("SmartPro.db", MODE_APPEND, null);
@@ -139,17 +147,38 @@ public class Main extends Activity implements ActionBar.TabListener
         alertDialogBuilder.show();
     }
 
-    public void GotoNewPerson(MenuItem item)
+    public void GotoNewPerson(final MenuItem item)
     {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-        final View modelRegister = getLayoutInflater().inflate(R.layout.model_newresource, null);
-        alertDialogBuilder.setView(modelRegister);
+        final View modelNewPerson = getLayoutInflater().inflate(R.layout.model_newresource, null);
+
+        if(item == null)
+        {
+            ((EditText)modelNewPerson.findViewById(R.id.model_newresource_name)).setError(getString(R.string.fillfield));
+        }
+
+        alertDialogBuilder.setView(modelNewPerson);
         alertDialogBuilder.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                if(((EditText)modelNewPerson.findViewById(R.id.model_newresource_name)).getText().toString().trim().equals(""))
+                {
+                    GotoNewPerson(null);
+                }
+                else
+                {
+                    String type = "false";
+                    if(((Spinner)modelNewPerson.findViewById(R.id.model_newresource_job)).getSelectedItem().toString().equals(getString(R.string.client)))
+                    {
+                        type = "true";
+                    }
+                    mDBSmartPro.NewResource(((EditText) modelNewPerson.findViewById(R.id.model_newresource_name)).getText().toString(), ((EditText) modelNewPerson.findViewById(R.id.model_newresource_description)).getText().toString(), ((Spinner)modelNewPerson.findViewById(R.id.model_newresource_job)).getSelectedItem().toString(), type, "test");
+                    mViewPager.setAdapter(mSectionsPagerAdapter);
+                    mViewPager.setCurrentItem(1);
+                }
             }
         });
         alertDialogBuilder.setNeutralButton(getString(R.string.importcontact), new DialogInterface.OnClickListener()
@@ -166,10 +195,24 @@ public class Main extends Activity implements ActionBar.TabListener
         alertDialogBuilder.show();
     }
 
+    public void GotoNewTask(MenuItem item)
+    {
+        mDBSmartPro.NewTask(false, "Une tâche de plus", "Ma nouvelle tâche", new Date(1418474890));
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(2);
+    }
+
     public void GotoCalendar(MenuItem item)
     {
         Intent intent = new Intent(Main.this, Calendar.class);
         startActivityForResult(intent, 1);
+    }
+
+    public void UpgradeDatabase(MenuItem item)
+    {
+        mDBSmartPro.onUpgrade(mDBSmartPro.getWritableDatabase(), 1, 2);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(0);
     }
 
     @Override
@@ -289,14 +332,11 @@ public class Main extends Activity implements ActionBar.TabListener
         }
 
         @Override
-        public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState)
         {
-            DBSmartPro mDBSmartPro = new DBSmartPro(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
-            DBTask mDBTask = new DBTask(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
-            mDBTask.getWritableDatabase();
-            mDBTask.NewTask("salut", "test", "2014");
-
-            ArrayList<EnumTask> TASKLIST = new ArrayList<EnumTask>();
+            final DBSmartPro mDBSmartPro = new DBSmartPro(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
+            SQLiteDatabase db = mDBSmartPro.getWritableDatabase();
+            mDBSmartPro.onCreate(db);
 
             View rootView = null;
 
@@ -456,17 +496,15 @@ public class Main extends Activity implements ActionBar.TabListener
                     rootView = inflater.inflate(R.layout.fragment_task, container, false);
                     final ListView mTaskList = (ListView) rootView.findViewById(R.id.TaskList);
 
-                    final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), mDBTask.GetTasks());
-                    //mTaskListAdapter.clear();
-                    //mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application", new Date()));
-                    //mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application", new Date(0)));
-                    //mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application", new Date()));
+                    List<EnumTask> mTask = mDBSmartPro.GetTasks();
+
+                    final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), mTask);
 
                     mTaskList.setAdapter(mTaskListAdapter);
                     mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
                         {
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                             final View modelTask = inflater.inflate(R.layout.model_task, null);
@@ -476,8 +514,7 @@ public class Main extends Activity implements ActionBar.TabListener
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
-                                    mTaskListAdapter.clear();
-                                    mTaskList.setAdapter(mTaskListAdapter);
+                                    mDBSmartPro.RemoveResource(((EnumTask) view.getTag()).ID);
                                 }
                             });
                             alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()

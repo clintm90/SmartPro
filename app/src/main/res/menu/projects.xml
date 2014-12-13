@@ -16,6 +16,7 @@
             <item android:id="@+id/action_export"
                   android:icon="@drawable/ic_action_export"
                   android:title="@string/action_export"
+                  android:onClick="UpgradeDatabase"
                   android:showAsAction="always"/>
 
             <item android:id="@+id/action_about"

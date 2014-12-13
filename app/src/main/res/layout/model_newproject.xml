@@ -22,7 +22,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="12dp"
-        android:inputType="textCapSentences"/>
+        android:inputType="textCapSentences|textNoSuggestions"/>
 
     <EditText
         android:id="@+id/model_newproject_description"
@@ -57,7 +57,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
         android:id="@+id/model_newproject_resources"
-        android:entries="@array/sports"
+        android:entries="@array/job"
         android:prompt="@string/app_name"/>
 
 </LinearLayout>
