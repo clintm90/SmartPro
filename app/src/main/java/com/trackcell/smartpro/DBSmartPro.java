@@ -7,13 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class DBResources extends SQLiteOpenHelper
+public class DBSmartPro extends SQLiteOpenHelper
 {
     private Context mContext;
 
-    public DBResources(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler)
+    public DBSmartPro(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler)
     {
         super(context, name, factory, version, errorHandler);
         mContext = context;
@@ -25,6 +26,8 @@ public class DBResources extends SQLiteOpenHelper
         try
         {
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" DATETIME NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
+            //db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectResource\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"ProjectID\" INTEGER NOT NULL , \"ResourceID\" INTEGER NOT NULL )");
         }
         catch(Exception e)
         {
@@ -36,6 +39,8 @@ public class DBResources extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
         db.execSQL("DROP TABLE IF EXISTS \"Resources\";");
+        //db.execSQL("DROP TABLE IF EXISTS \"AssignProjectResource\";");
+        db.execSQL("DROP TABLE IF EXISTS \"Task\";");
         onCreate(db);
     }
 
@@ -53,12 +58,41 @@ public class DBResources extends SQLiteOpenHelper
         }
     }
 
+    public boolean NewTask(String name, String description, String date)
+    {
+        try
+        {
+            SQLiteDatabase mDatabase = getWritableDatabase();
+            mDatabase.execSQL("INSERT INTO \"Task\" VALUES (NULL,\""+name+"\",\""+description+"\",\""+date+"\",\"false\");");
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public List<EnumTask> GetTasks()
+    {
+        List<EnumTask> mRTS = new ArrayList<EnumTask>();
+
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Task\";", null);
+
+        while(result.moveToNext())
+        {
+            mRTS.add(new EnumTask(mContext, false, result.getString(1), result.getString(2), new Date(0)));
+        }
+
+        return mRTS;
+    }
+
     public List<EnumResource> GetCustomers()
     {
         List<EnumResource> mRTS = new ArrayList<EnumResource>();
 
         SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=true;", null);
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=\"true\";", null);
 
         while(result.moveToNext())
         {
@@ -73,7 +107,7 @@ public class DBResources extends SQLiteOpenHelper
         List<EnumResource> mRTS = new ArrayList<EnumResource>();
 
         SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=false;", null);
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=\"false\";", null);
 
         while(result.moveToNext())
         {

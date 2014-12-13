@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -292,7 +291,10 @@ public class Main extends Activity implements ActionBar.TabListener
         @Override
         public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            DBResources mDBResources = new DBResources(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
+            DBSmartPro mDBSmartPro = new DBSmartPro(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
+            DBTask mDBTask = new DBTask(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
+            mDBTask.getWritableDatabase();
+            mDBTask.NewTask("salut", "test", "2014");
 
             ArrayList<EnumTask> TASKLIST = new ArrayList<EnumTask>();
 
@@ -410,16 +412,8 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataHeader.add(getString(R.string.clients));
                     listDataHeader.add(getString(R.string.users));
 
-                    //List<EnumResource> clients = new ArrayList<EnumResource>();
-                    //clients.add(new EnumResource(getActivity().getApplicationContext(), "Group Elephant Com. and Events", "My first application", true, 0));
-
-                    /*List<EnumResource> users = new ArrayList<EnumResource>();
-                    users.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true, 2));
-                    users.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false, 0));
-                    users.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false, 1));*/
-
-                    listDataChild.put(listDataHeader.get(0), mDBResources.GetCustomers());
-                    listDataChild.put(listDataHeader.get(1), mDBResources.GetUsers());
+                    listDataChild.put(listDataHeader.get(0), mDBSmartPro.GetCustomers());
+                    listDataChild.put(listDataHeader.get(1), mDBSmartPro.GetUsers());
 
                     mResourcesList.setAdapter(mResourcesExpandableListAdapter);
                     mResourcesList.expandGroup(0);
@@ -462,11 +456,11 @@ public class Main extends Activity implements ActionBar.TabListener
                     rootView = inflater.inflate(R.layout.fragment_task, container, false);
                     final ListView mTaskList = (ListView) rootView.findViewById(R.id.TaskList);
 
-                    final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), TASKLIST);
-                    mTaskListAdapter.clear();
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application", new Date()));
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application", new Date(0)));
-                    mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application", new Date()));
+                    final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), mDBTask.GetTasks());
+                    //mTaskListAdapter.clear();
+                    //mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), false, "Créer le site web", "My first application", new Date()));
+                    //mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Uploader les fichiers", "My first application", new Date(0)));
+                    //mTaskListAdapter.add(new EnumTask(getActivity().getApplicationContext(), true, "Analyser le SEO", "My first application", new Date()));
 
                     mTaskList.setAdapter(mTaskListAdapter);
                     mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener()
