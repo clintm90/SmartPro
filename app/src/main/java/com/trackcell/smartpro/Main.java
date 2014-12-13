@@ -483,8 +483,14 @@ public class Main extends Activity implements ActionBar.TabListener
                 case 3:
                     rootView = inflater.inflate(R.layout.fragment_task, container, false);
                     final ListView mTaskList = (ListView) rootView.findViewById(R.id.TaskList);
+                    TextView mTaskListEmptyLabel = (TextView) rootView.findViewById(R.id.taskListEmptyLabel);
 
                     List<EnumTask> mTask = mDBSmartPro.GetTasks();
+
+                    if(mTask.size() == 0)
+                    {
+                        mTaskListEmptyLabel.setVisibility(View.VISIBLE);
+                    }
 
                     final TaskListAdapter mTaskListAdapter = new TaskListAdapter(getActivity().getApplicationContext(), mTask);
 
