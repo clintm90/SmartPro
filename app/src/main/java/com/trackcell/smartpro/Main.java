@@ -175,7 +175,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     {
                         type = "true";
                     }
-                    mDBSmartPro.NewResource(((EditText) modelNewPerson.findViewById(R.id.model_newresource_name)).getText().toString(), ((EditText) modelNewPerson.findViewById(R.id.model_newresource_description)).getText().toString(), ((Spinner)modelNewPerson.findViewById(R.id.model_newresource_job)).getSelectedItem().toString(), type, "test");
+                    mDBSmartPro.NewResource(((EditText) modelNewPerson.findViewById(R.id.model_newresource_name)).getText().toString(), ((EditText) modelNewPerson.findViewById(R.id.model_newresource_description)).getText().toString(), ((Spinner)modelNewPerson.findViewById(R.id.model_newresource_job)).getSelectedItem().toString(), type, "none");
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setCurrentItem(1);
                 }
@@ -223,18 +223,6 @@ public class Main extends Activity implements ActionBar.TabListener
             if (resultCode == RESULT_OK)
             {
                 overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
-
-                //region old contact grab
-                /*Uri contactUri = data.getData();
-                String[] projection = {ContactsContract.CommonDataKinds.Phone.CONTACT_ID, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-                Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null);
-                cursor.moveToFirst();
-
-                ListView mResourceList = (ListView)findViewById(R.id.ResourcesList);
-                ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
-                mResourceListAdapter.add(new EnumResource(getApplicationContext(), cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)), "salut", false));
-                mResourceList.setAdapter(mResourceListAdapter);*/
-                //endregion
             }
             else
             {
