@@ -35,9 +35,9 @@ import java.util.Locale;
 
 public class Main extends Activity implements ActionBar.TabListener
 {
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
-    int CurrentPage = 0;
+    private DBResources mDBResources;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
     private Context parent;
     private ListView mResourcesList;
 
@@ -49,6 +49,22 @@ public class Main extends Activity implements ActionBar.TabListener
         parent = getApplicationContext();
 
         setContentView(R.layout.activity_main);
+
+        mDBResources = new DBResources(this, "SmartPro.db", null, 1, null);
+        mDBResources.Populate();
+
+        //region first sqlite implement
+        /*mDatabase = openOrCreateDatabase("SmartPro.db", MODE_APPEND, null);
+        mDatabase.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB)");
+
+        //mDatabase.execSQL("INSERT INTO \"Resources\" VALUES (0,\"John Loizeau\",\"Mécanicien\",\"Collaborateur\",\"false\",null);");
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\";", null);
+
+        while(result.moveToNext())
+        {
+            Toast.makeText(getApplicationContext(), result.getString(2), Toast.LENGTH_SHORT).show();
+        }*/
+        //endregion
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -63,7 +79,6 @@ public class Main extends Activity implements ActionBar.TabListener
             @Override
             public void onPageSelected(int position)
             {
-                CurrentPage = position;
                 actionBar.setSelectedNavigationItem(position);
 
                 switch (position)
