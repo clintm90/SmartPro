@@ -35,7 +35,6 @@ import java.util.Locale;
 
 public class Main extends Activity implements ActionBar.TabListener
 {
-    private DBResources mDBResources;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private Context parent;
@@ -49,9 +48,6 @@ public class Main extends Activity implements ActionBar.TabListener
         parent = getApplicationContext();
 
         setContentView(R.layout.activity_main);
-
-        mDBResources = new DBResources(this, "SmartPro.db", null, 1, null);
-        mDBResources.Populate();
 
         //region first sqlite implement
         /*mDatabase = openOrCreateDatabase("SmartPro.db", MODE_APPEND, null);
@@ -296,8 +292,8 @@ public class Main extends Activity implements ActionBar.TabListener
         @Override
         public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            final ArrayList<EnumProject> PROJECTLIST = new ArrayList<EnumProject>();
-            ArrayList<EnumResource> RESOURCESLIST = new ArrayList<EnumResource>();
+            DBResources mDBResources = new DBResources(getActivity().getApplicationContext(), "SmartPro.db", null, 1, null);
+
             ArrayList<EnumTask> TASKLIST = new ArrayList<EnumTask>();
 
             View rootView = null;
@@ -414,16 +410,16 @@ public class Main extends Activity implements ActionBar.TabListener
                     listDataHeader.add(getString(R.string.clients));
                     listDataHeader.add(getString(R.string.users));
 
-                    List<EnumResource> clients = new ArrayList<EnumResource>();
-                    clients.add(new EnumResource(getActivity().getApplicationContext(), "Group Elephant Com. and Events", "My first application", true, 0));
+                    //List<EnumResource> clients = new ArrayList<EnumResource>();
+                    //clients.add(new EnumResource(getActivity().getApplicationContext(), "Group Elephant Com. and Events", "My first application", true, 0));
 
-                    List<EnumResource> users = new ArrayList<EnumResource>();
+                    /*List<EnumResource> users = new ArrayList<EnumResource>();
                     users.add(new EnumResource(getActivity().getApplicationContext(), "Clint Mourlevat", "My first application", true, 2));
                     users.add(new EnumResource(getActivity().getApplicationContext(), "John Loizeau", "My first application", false, 0));
-                    users.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false, 1));
+                    users.add(new EnumResource(getActivity().getApplicationContext(), "Sebastien Grosjean", "My first application", false, 1));*/
 
-                    listDataChild.put(listDataHeader.get(0), clients);
-                    listDataChild.put(listDataHeader.get(1), users);
+                    listDataChild.put(listDataHeader.get(0), mDBResources.GetCustomers());
+                    listDataChild.put(listDataHeader.get(1), mDBResources.GetUsers());
 
                     mResourcesList.setAdapter(mResourcesExpandableListAdapter);
                     mResourcesList.expandGroup(0);
