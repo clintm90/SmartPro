@@ -33,7 +33,7 @@ public class TaskListAdapter extends ArrayAdapter<EnumTask>
         TextView taskListName = (TextView)rowView.findViewById(R.id.model_resourcesList_name);
         TextView taskListDescription = (TextView)rowView.findViewById(R.id.model_taskList_description);
         TextView taskListDate = (TextView)rowView.findViewById(R.id.model_taskList_date);
-        TextView taskListProject = (TextView)rowView.findViewById(R.id.model_taskList_project);
+        TextView taskListProject = (TextView)rowView.findViewById(R.id.title);
 
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext.getApplicationContext());
         taskListName.setText(values.get(position).Name);

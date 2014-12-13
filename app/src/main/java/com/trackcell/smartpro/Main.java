@@ -101,6 +101,29 @@ public class Main extends Activity implements ActionBar.TabListener
         }
     }
 
+    //region ShowCalendar
+    public String ShowCalendar()
+    {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        final View modelDialogCalendar = getLayoutInflater().inflate(R.layout.model_dialogcalendar, null);
+
+        alertDialog.setView(modelDialogCalendar);
+        alertDialog.setCancelable(true);
+        alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+            }
+        });
+        alertDialog.create();
+        alertDialog.show();
+
+        return null;
+    }
+    //endregion
+
     public void GotoAbout(MenuItem item)
     {
         Intent mAbout = new Intent(this, About.class);
@@ -224,7 +247,7 @@ public class Main extends Activity implements ActionBar.TabListener
                 }
                 else
                 {
-                    mDBSmartPro.NewTask(false, ((EditText)modelNewTask.findViewById(R.id.model_newtask_name)).getText().toString(), ((EditText)modelNewTask.findViewById(R.id.model_newtask_description)).getText().toString(), new Date(1418474890));
+                    mDBSmartPro.NewTask(false, ((EditText) modelNewTask.findViewById(R.id.model_newtask_name)).getText().toString(), ((EditText) modelNewTask.findViewById(R.id.model_newtask_description)).getText().toString(), new Date(1418474890));
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setCurrentItem(2);
                 }
