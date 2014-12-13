@@ -14,14 +14,14 @@
     <string name="action_newtask">Nouvelle Tâche</string>
     <string name="action_search">Rechercher</string>
     <string name="action_export">Exporter les projets</string>
-    <string name="action_about">A Propos&#8230;</string>
+    <string name="action_about">A Propos…</string>
     <string name="projectname">Nom du Projet</string>
     <string name="projectdescription">Présentation</string>
     <string name="fillfield">"Veuillez remplir ce champs"</string>
     <string name="clients">Clients</string>
     <string name="users">Utilisateurs</string>
     <string name="task">Tâche</string>
-    <string name="currentproject">Projet(s) en cours&#8230;</string>
+    <string name="currentproject">Projet(s) en cours…</string>
     <string name="noproject">Il n\'y à pas de projet.</string>
     <string name="noresource">Il n\'y à pas de ressource.</string>
     <string name="notask">Il n\'y à pas de tâche.</string>
@@ -42,8 +42,8 @@
     <string name="title_activity_main">Main</string>
     <string name="active">Actif</string>
     <string name="inactive">Inactif</string>
-
     <string name="client">Client</string>
+
     <string-array name="job">
         <item name="owner">Chef de projet</item>
         <item name="contributor">Contributeur</item>
@@ -54,5 +54,6 @@
     <string name="title_activity_resource">Ressources</string>
     <string name="title_activity_project">Projets</string>
     <string name="title_activity_calendar">Calendrier</string>
+    <string name="title_activity_about">About</string>
 
 </resources>

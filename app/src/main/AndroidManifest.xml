@@ -48,9 +48,17 @@
             android:name=".Calendar"
             android:icon="@null"
             android:label="@string/title_activity_calendar"
-            android:parentActivityName=".Main"
             android:logo="@android:color/transparent"
+            android:parentActivityName=".Main"
             android:theme="@style/AppTheme.ActionBar.Back" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.trackcell.smartpro.Main" />
+        </activity>
+        <activity
+            android:name=".About"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".Main" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.trackcell.smartpro.Main" />
