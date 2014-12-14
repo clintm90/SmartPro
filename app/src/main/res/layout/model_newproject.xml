@@ -37,18 +37,25 @@
         android:minWidth="3dp"
         android:singleLine="false"/>
 
-    <!--<DatePicker
+    <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/model_newproject_startdate"
+        android:layout_marginTop="12dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:calendarViewShown="false"
-        android:spinnersShown="true"/>-->
+        android:text="@string/action_addresource"
+        android:drawableLeft="@drawable/ic_action_addb"
+        android:id="@+id/imageButton"/>
 
-    <Spinner
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/editText"/>
+
+    <!--<Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:spinnerMode="dialog"
@@ -58,6 +65,6 @@
         android:layout_marginBottom="12dp"
         android:id="@+id/model_newproject_resources"
         android:entries="@array/job"
-        android:prompt="@string/app_name"/>
+        android:prompt="@string/app_name"/>-->
 
 </LinearLayout>

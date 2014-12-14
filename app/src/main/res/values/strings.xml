@@ -59,5 +59,6 @@
     <string name="title_activity_calendar">Calendrier</string>
     <string name="title_activity_about">A Propos de SmartPro&#8230;</string>
     <string name="about_description">Cette application vous permet de gérer vos projets suivant vos ressources.\n\nPour commencer il vous suffit de créer un nouveau projet et de choisir quelle ressources s\'y appliquent.</string>
+    <string name="action_addresource">Ajouter une ressource</string>
 
 </resources>

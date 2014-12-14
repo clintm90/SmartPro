@@ -15,7 +15,7 @@
         android:textSize="19sp"/>
 
     <EditText
-        android:id="@+id/model_newresource_name"
+        android:id="@+id/model_task_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="@string/taskname"
@@ -24,9 +24,15 @@
         android:layout_marginTop="12dp"
         android:inputType="textCapSentences"/>
 
-    <RatingBar
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/model_task_description"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"/>
+        android:hint="@string/taskname"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="12dp"
+        android:inputType="textCapSentences|textNoSuggestions"/>
 
 </LinearLayout>

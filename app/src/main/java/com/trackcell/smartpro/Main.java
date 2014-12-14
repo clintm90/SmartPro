@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -101,12 +101,13 @@ public class Main extends Activity implements ActionBar.TabListener
         }
     }
 
-    //region ShowCalendar
     public String ShowCalendar()
     {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
         final View modelDialogCalendar = getLayoutInflater().inflate(R.layout.model_dialogcalendar, null);
+
+        final DatePicker mDialogCalendarPicker = (DatePicker)modelDialogCalendar.findViewById(R.id.model_dialogcalendar_picker);
 
         alertDialog.setView(modelDialogCalendar);
         alertDialog.setCancelable(true);
@@ -115,6 +116,7 @@ public class Main extends Activity implements ActionBar.TabListener
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                Toast.makeText(getApplicationContext(), mDialogCalendarPicker.getYear(), Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.create();
@@ -122,12 +124,12 @@ public class Main extends Activity implements ActionBar.TabListener
 
         return null;
     }
-    //endregion
 
     public void GotoAbout(MenuItem item)
     {
-        Intent mAbout = new Intent(this, About.class);
-        startActivityForResult(mAbout, 1);
+        ShowCalendar();
+        //Intent mAbout = new Intent(this, About.class);
+        //startActivityForResult(mAbout, 1);
     }
 
     public void GotoNewProject(MenuItem item)
@@ -135,6 +137,11 @@ public class Main extends Activity implements ActionBar.TabListener
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         final View modelNewProject = getLayoutInflater().inflate(R.layout.model_newproject, null);
+
+        if(item == null)
+        {
+            ((EditText)modelNewProject.findViewById(R.id.model_newproject_name)).setError(getString(R.string.fillfield));
+        }
 
         alertDialogBuilder.setView(modelNewProject);
         alertDialogBuilder.setCancelable(true);
@@ -145,13 +152,22 @@ public class Main extends Activity implements ActionBar.TabListener
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                Intent intent = new Intent(getApplicationContext(), Project.class);
-                intent.putExtra("name", ((TextView) modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString());
-                startActivityForResult(intent, 1);
+                if(((EditText)modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString().trim().equals(""))
+                {
+                    GotoNewProject(null);
+                }
+                else
+                {
+                    Intent intent = new Intent(getApplicationContext(), Project.class);
+                    intent.putExtra("name", ((TextView) modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString());
+                    intent.putExtra("id", -1);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
         alertDialogBuilder.setNegativeButton(getString(R.string.cancel), null);
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+        //region old OnShowListener
+        /*alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
         {
             @Override
             public void onShow(DialogInterface dialog)
@@ -168,11 +184,12 @@ public class Main extends Activity implements ActionBar.TabListener
                         /*ResourcesListAdapter mResourceListAdapter = (ResourcesListAdapter) mResourceList.getAdapter();
                         mResourceListAdapter.add(new EnumResource(getApplicationContext(), "salut", "salut", false, 1));
                         mResourceList.setAdapter(mResourceListAdapter);*/
-                        alertDialog.cancel();
+/*                        alertDialog.cancel();
                     }
                 });
             }
-        });
+        });*/
+        //endregion
         alertDialogBuilder.show();
     }
 
@@ -608,7 +625,17 @@ public class Main extends Activity implements ActionBar.TabListener
                         public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
                         {
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+                            final ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.MainContent);
+
                             final View modelTask = inflater.inflate(R.layout.model_task, null);
+
+                            final EditText mModelTaskName = (EditText)modelTask.findViewById(R.id.model_task_name);
+                            final EditText mModelTaskDescription = (EditText)modelTask.findViewById(R.id.model_task_description);
+
+                            mModelTaskName.setText(((EnumTask) view.getTag()).Name);
+                            mModelTaskDescription.setText(((EnumTask) view.getTag()).Description);
+
                             alertDialog.setView(modelTask);
                             alertDialog.setNegativeButton(getString(R.string.action_delete), new DialogInterface.OnClickListener()
                             {
@@ -626,6 +653,9 @@ public class Main extends Activity implements ActionBar.TabListener
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
+                                    mDBSmartPro.AlterTask(((EnumTask) view.getTag()).ID, mModelTaskName.getText().toString(), mModelTaskDescription.getText().toString());
+                                    mViewPager.setAdapter(mViewPager.getAdapter());
+                                    mViewPager.setCurrentItem(2);
                                 }
                             });
                             alertDialog.create();
