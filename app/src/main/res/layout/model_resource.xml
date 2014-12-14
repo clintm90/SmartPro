@@ -22,7 +22,17 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="12dp"
         android:layout_marginRight="5dp"
+        android:inputType="textCapWords|textNoSuggestions"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/model_resource_description"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="5dp"
         android:layout_marginBottom="12dp"
+        android:hint="@string/projectdescription"
         android:inputType="textCapSentences"/>
 
 </LinearLayout>

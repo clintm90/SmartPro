@@ -534,15 +534,23 @@ public class Main extends Activity implements ActionBar.TabListener
                         public boolean onChildClick(ExpandableListView parent, final View v, int groupPosition, int childPosition, long id)
                         {
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+                            final ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.MainContent);
+
                             final View modelResource = inflater.inflate(R.layout.model_resource, null);
+                            final EditText mModelResourceName = (EditText)modelResource.findViewById(R.id.model_resource_name);
+                            final EditText mModelResourceDescription = (EditText)modelResource.findViewById(R.id.model_resource_description);
+
+                            mModelResourceName.setText(((EnumResource) v.getTag()).Name);
+                            mModelResourceDescription.setText(((EnumResource) v.getTag()).Description);
+
                             alertDialog.setView(modelResource);
                             alertDialog.setNegativeButton(getString(R.string.action_delete), new DialogInterface.OnClickListener()
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
-                                    ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.MainContent);
-                                    mDBSmartPro.RemoveResource(((EnumTask) v.getTag()).ID);
+                                    mDBSmartPro.RemoveResource(((EnumResource) v.getTag()).ID);
                                     mViewPager.setAdapter(mViewPager.getAdapter());
                                     mViewPager.setCurrentItem(1);
                                 }
@@ -552,14 +560,17 @@ public class Main extends Activity implements ActionBar.TabListener
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
+                                    if(!mModelResourceName.getText().toString().trim().equals(""))
+                                    {
+                                        mDBSmartPro.AlterResource(((EnumResource) v.getTag()).ID, mModelResourceName.getText().toString(),mModelResourceDescription.getText().toString());
+                                        mViewPager.setAdapter(mViewPager.getAdapter());
+                                        mViewPager.setCurrentItem(1);
+                                    }
                                 }
                             });
                             alertDialog.create();
                             alertDialog.show();
-                            /*Intent mResourceIntent = new Intent(getActivity(), Resource.class);
-                            mResourceIntent.putExtra("name", ((EnumResource) v.getTag()).Name);
-                            mResourceIntent.putExtra("id", "1");
-                            getActivity().startActivityForResult(mResourceIntent, 1);*/
+
                             return false;
                         }
                     });

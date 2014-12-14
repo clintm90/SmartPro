@@ -98,7 +98,7 @@ public class DBSmartPro extends SQLiteOpenHelper
 
         while(result.moveToNext())
         {
-            mRTS.add(new EnumResource(mContext, result.getString(1), result.getString(2), true, 0));
+            mRTS.add(new EnumResource(mContext, result.getInt(0), result.getString(1), result.getString(2), true, 0));
         }
 
         return mRTS;
@@ -113,7 +113,7 @@ public class DBSmartPro extends SQLiteOpenHelper
 
         while(result.moveToNext())
         {
-            mRTS.add(new EnumResource(mContext, result.getString(1), result.getString(2), true, 0));
+            mRTS.add(new EnumResource(mContext, result.getInt(0), result.getString(1), result.getString(2), true, 0));
         }
 
         return mRTS;
@@ -129,5 +129,11 @@ public class DBSmartPro extends SQLiteOpenHelper
     {
         SQLiteDatabase mDatabase = getReadableDatabase();
         mDatabase.execSQL("DELETE FROM \"Resources\" WHERE ID=\""+String.valueOf(id)+"\";");
+    }
+
+    public void AlterResource(int id, String name, String description)
+    {
+        SQLiteDatabase mDatabase = getWritableDatabase();
+        mDatabase.execSQL("UPDATE \"Resources\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\" WHERE \"ID\" = "+id+";");
     }
 }
