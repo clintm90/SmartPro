@@ -22,14 +22,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -116,7 +117,6 @@ public class Main extends Activity implements ActionBar.TabListener
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                Toast.makeText(getApplicationContext(), mDialogCalendarPicker.getYear(), Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.create();
@@ -127,9 +127,8 @@ public class Main extends Activity implements ActionBar.TabListener
 
     public void GotoAbout(MenuItem item)
     {
-        ShowCalendar();
-        //Intent mAbout = new Intent(this, About.class);
-        //startActivityForResult(mAbout, 1);
+        Intent mAbout = new Intent(this, About.class);
+        startActivityForResult(mAbout, 1);
     }
 
     public void GotoNewProject(MenuItem item)
@@ -264,7 +263,8 @@ public class Main extends Activity implements ActionBar.TabListener
                 }
                 else
                 {
-                    mDBSmartPro.NewTask(false, ((EditText) modelNewTask.findViewById(R.id.model_newtask_name)).getText().toString(), ((EditText) modelNewTask.findViewById(R.id.model_newtask_description)).getText().toString(), new Date(1418474890));
+                    DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
+                    mDBSmartPro.NewTask(false, ((EditText) modelNewTask.findViewById(R.id.model_newtask_name)).getText().toString(), ((EditText) modelNewTask.findViewById(R.id.model_newtask_description)).getText().toString(), dateFormat.format(new Date()));
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setCurrentItem(2);
                 }
@@ -283,8 +283,9 @@ public class Main extends Activity implements ActionBar.TabListener
 
     public void GotoCalendar(MenuItem item)
     {
-        Intent intent = new Intent(Main.this, Calendar.class);
-        startActivityForResult(intent, 1);
+        ShowCalendar();
+        /*Intent intent = new Intent(Main.this, Calendar.class);
+        startActivityForResult(intent, 1);*/
     }
 
     public void UpgradeDatabase(MenuItem item)
@@ -632,9 +633,11 @@ public class Main extends Activity implements ActionBar.TabListener
 
                             final EditText mModelTaskName = (EditText)modelTask.findViewById(R.id.model_task_name);
                             final EditText mModelTaskDescription = (EditText)modelTask.findViewById(R.id.model_task_description);
+                            final CheckBox mModelTaskEnded = (CheckBox)modelTask.findViewById(R.id.model_task_isEnded);
 
                             mModelTaskName.setText(((EnumTask) view.getTag()).Name);
                             mModelTaskDescription.setText(((EnumTask) view.getTag()).Description);
+                            mModelTaskEnded.setChecked(((EnumTask)view.getTag()).isEnd);
 
                             alertDialog.setView(modelTask);
                             alertDialog.setNegativeButton(getString(R.string.action_delete), new DialogInterface.OnClickListener()
@@ -653,7 +656,7 @@ public class Main extends Activity implements ActionBar.TabListener
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
-                                    mDBSmartPro.AlterTask(((EnumTask) view.getTag()).ID, mModelTaskName.getText().toString(), mModelTaskDescription.getText().toString());
+                                    mDBSmartPro.AlterTask(((EnumTask) view.getTag()).ID, mModelTaskName.getText().toString(), mModelTaskDescription.getText().toString(), mModelTaskEnded.isChecked());
                                     mViewPager.setAdapter(mViewPager.getAdapter());
                                     mViewPager.setCurrentItem(2);
                                 }

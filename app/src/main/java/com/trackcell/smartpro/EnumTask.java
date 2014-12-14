@@ -3,7 +3,6 @@ package com.trackcell.smartpro;
 import android.content.Context;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class EnumTask implements Serializable
 {
@@ -12,9 +11,9 @@ public class EnumTask implements Serializable
     public boolean isEnd = false;
     public String Name;
     public String Description;
-    public Date Date;
+    public String Date;
 
-    public EnumTask(Context context, int id, boolean ended, String name, String description, Date date)
+    public EnumTask(Context context, int id, boolean ended, String name, String description, String date)
     {
         mContext = context;
         ID = id;

@@ -27,7 +27,7 @@ public class DBSmartPro extends SQLiteOpenHelper
         try
         {
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB)");
-            db.execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" DATETIME NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
             //db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectResource\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"ProjectID\" INTEGER NOT NULL , \"ResourceID\" INTEGER NOT NULL )");
         }
         catch(Exception e)
@@ -59,13 +59,13 @@ public class DBSmartPro extends SQLiteOpenHelper
         }
     }
 
-    public boolean NewTask(boolean isEnded, String name, String description, Date date)
+    public boolean NewTask(boolean isEnded, String name, String description, String date)
     {
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext.getApplicationContext());
         try
         {
             SQLiteDatabase mDatabase = getWritableDatabase();
-            mDatabase.execSQL("INSERT INTO \"Task\" VALUES (NULL,\""+name+"\",\""+description+"\",\""+dateFormat.format(date)+"\",\""+Boolean.valueOf(isEnded)+"\");");
+            mDatabase.execSQL("INSERT INTO \"Task\" VALUES (NULL,\""+name+"\",\""+description+"\",\""+date+"\",\""+Boolean.valueOf(isEnded)+"\");");
             return true;
         }
         catch(Exception e)
@@ -83,7 +83,7 @@ public class DBSmartPro extends SQLiteOpenHelper
 
         while(result.moveToNext())
         {
-            mRTS.add(new EnumTask(mContext, result.getInt(0), Boolean.valueOf(result.getString(4)), result.getString(1), result.getString(2), new Date(12313123)));
+            mRTS.add(new EnumTask(mContext, result.getInt(0), Boolean.valueOf(result.getString(4)), result.getString(1), result.getString(2), result.getString(3)));
         }
 
         return mRTS;
@@ -137,9 +137,9 @@ public class DBSmartPro extends SQLiteOpenHelper
         mDatabase.execSQL("UPDATE \"Resources\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\" WHERE \"ID\" = "+id+";");
     }
 
-    public void AlterTask(int id, String name, String description)
+    public void AlterTask(int id, String name, String description, boolean isEnded)
     {
         SQLiteDatabase mDatabase = getWritableDatabase();
-        mDatabase.execSQL("UPDATE \"Task\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\" WHERE \"ID\" = "+id+";");
+        mDatabase.execSQL("UPDATE \"Task\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\", \"Ended\" = \""+String.valueOf(isEnded)+"\" WHERE \"ID\" = "+id+";");
     }
 }

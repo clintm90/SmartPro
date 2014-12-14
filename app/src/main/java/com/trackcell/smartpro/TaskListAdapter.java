@@ -38,7 +38,7 @@ public class TaskListAdapter extends ArrayAdapter<EnumTask>
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext.getApplicationContext());
         taskListName.setText(values.get(position).Name);
         taskListDescription.setText(values.get(position).Description);
-        taskListDate.setText(dateFormat.format(values.get(position).Date));
+        taskListDate.setText(values.get(position).Date);
 
         if(values.get(position).isEnd)
         {

@@ -32,7 +32,17 @@
         android:layout_marginTop="12dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="12dp"
         android:inputType="textCapSentences|textNoSuggestions"/>
+
+    <CheckBox
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/taskended"
+        android:id="@+id/model_task_isEnded"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="12dp"
+        android:checked="true"/>
 
 </LinearLayout>
