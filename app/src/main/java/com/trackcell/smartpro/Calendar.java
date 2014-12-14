@@ -13,7 +13,6 @@ public class Calendar extends Activity
 
     private CalendarView mCalendar;
     private int mYear;
-    private static Calendar instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
