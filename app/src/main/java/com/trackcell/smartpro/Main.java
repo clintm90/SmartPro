@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -365,6 +366,7 @@ public class Main extends Activity implements ActionBar.TabListener
     public static class PlaceholderFragment extends Fragment
     {
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private ActionMode mActionMode;
 
         public PlaceholderFragment()
         {
@@ -443,9 +445,16 @@ public class Main extends Activity implements ActionBar.TabListener
                         @Override
                         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
                         {
-                            Intent intent = new Intent(getActivity(), Project.class);
-                            intent.putExtra("name", ((EnumProject) v.getTag()).Name);
-                            getActivity().startActivityForResult(intent, 1);
+                            if(mActionMode == null)
+                            {
+                                Intent intent = new Intent(getActivity(), Project.class);
+                                intent.putExtra("name", ((EnumProject) v.getTag()).Name);
+                                getActivity().startActivityForResult(intent, 1);
+                            }
+                            else
+                            {
+                                onListItemCheck(childPosition);
+                            }
                             return false;
                         }
                     });
@@ -464,7 +473,8 @@ public class Main extends Activity implements ActionBar.TabListener
                         {
                             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
                             {
-                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                                onListItemCheck(position);
+                                /*final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                                 alertDialog.setItems(new String[]{getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
                                 {
                                     @Override
@@ -501,7 +511,7 @@ public class Main extends Activity implements ActionBar.TabListener
                                     }
                                 });
                                 alertDialog.create();
-                                alertDialog.show();
+                                alertDialog.show();*/
                             }
                             return true;
                         }
@@ -670,6 +680,23 @@ public class Main extends Activity implements ActionBar.TabListener
                 default:
                     return rootView;
             }
+        }
+
+        private void onListItemCheck(int position)
+        {
+            /*SelectableAdapter adapter = (SelectableAdapter) root();
+            adapter.toggleSelection(position);*/
+            boolean hasCheckedItems = true;
+
+            if (hasCheckedItems && mActionMode == null)
+                // there are some selected items, start the actionMode
+                mActionMode = getActivity().startActionMode(new ProjectsActionMode());
+            else if (!hasCheckedItems && mActionMode != null)
+                // there no selected items, finish the actionMode
+                mActionMode.finish();
+
+            /*if(mActionMode != null)
+                mActionMode.setTitle(String.valueOf(adapter.getSelectedCount()) + " selected");*/
         }
     }
 
