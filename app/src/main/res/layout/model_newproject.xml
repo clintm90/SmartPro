@@ -48,13 +48,6 @@
         android:drawableLeft="@drawable/ic_action_addb"
         android:id="@+id/imageButton"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/editText"/>
-
     <!--<Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

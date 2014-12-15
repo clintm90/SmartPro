@@ -25,6 +25,7 @@
 
     <style name="AppTheme.ActionBar.Back" parent="AppTheme">
         <item name="android:homeAsUpIndicator">@drawable/ic_action_arrow_left</item>
+        <item name="android:divider">@drawable/ic_action_add</item>
     </style>
 
     <style name="AppTheme.ActionBar.Text" parent="@android:style/TextAppearance">

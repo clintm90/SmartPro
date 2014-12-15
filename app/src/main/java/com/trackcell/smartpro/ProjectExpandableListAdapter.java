@@ -45,29 +45,30 @@ public class ProjectExpandableListAdapter extends BaseExpandableListAdapter
             convertView = infalInflater.inflate(R.layout.model_projectlist, null);
         }
 
-        TextView projectListName = (TextView)convertView.findViewById(R.id.model_resourcesList_name);
-        TextView projectListDescription = (TextView)convertView.findViewById(R.id.model_projectList_description);
-        TextView projectListState = (TextView)convertView.findViewById(R.id.model_projectList_state);
-        TextView projectListDay = (TextView)convertView.findViewById(R.id.model_projectList_day);
+        TextView mProjectListName = (TextView)convertView.findViewById(R.id.model_resourcesList_name);
+        TextView mProjectListDescription = (TextView)convertView.findViewById(R.id.model_projectList_description);
+        TextView mProjectListState = (TextView)convertView.findViewById(R.id.model_projectList_state);
+        TextView mProjectListDay = (TextView)convertView.findViewById(R.id.model_projectList_day);
 
-        projectListName.setText(((EnumProject)getChild(groupPosition, childPosition)).Name);
-        projectListDescription.setText(((EnumProject)getChild(groupPosition, childPosition)).Description);
-        projectListDay.setText("3 Personnes");
-        projectListName.setTypeface(null, Typeface.NORMAL);
+        mProjectListName.setText(((EnumProject)getChild(groupPosition, childPosition)).Name);
+        mProjectListDescription.setText(((EnumProject)getChild(groupPosition, childPosition)).Description);
+        mProjectListName.setTypeface(null, Typeface.NORMAL);
+
+        Main.InflateProjectItem(this._context, mProjectListState, mProjectListDay, ((EnumProject)getChild(groupPosition, childPosition)).ID);
 
         switch(((EnumProject)getChild(groupPosition, childPosition)).State)
         {
             case 0:
-                projectListState.setText("Prévu");
-                projectListState.setBackgroundResource(R.drawable.balloon_blue);
+                mProjectListState.setText("Prévu");
+                mProjectListState.setBackgroundResource(R.drawable.balloon_blue);
                 break;
             case 1:
-                projectListState.setText("En attente");
-                projectListState.setBackgroundResource(R.drawable.balloon_orange);
+                mProjectListState.setText("En attente");
+                mProjectListState.setBackgroundResource(R.drawable.balloon_orange);
                 break;
             case 2:
-                projectListState.setText("En retard");
-                projectListState.setBackgroundResource(R.drawable.balloon_red);
+                mProjectListState.setText("En retard");
+                mProjectListState.setBackgroundResource(R.drawable.balloon_red);
         }
 
         convertView.setTag(getChild(groupPosition, childPosition));

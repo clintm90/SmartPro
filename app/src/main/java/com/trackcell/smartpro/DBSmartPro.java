@@ -25,7 +25,7 @@ public class DBSmartPro extends SQLiteOpenHelper
     {
         this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Projects\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"StartDate\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"DueDate\" VARCHAR NOT NULL , \"Progress\" INTEGER NOT NULL );");
         this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB);");
-        this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
+        this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Tasks\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
     }
 
     @Override
@@ -35,8 +35,9 @@ public class DBSmartPro extends SQLiteOpenHelper
         {
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Projects\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"StartDate\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"DueDate\" VARCHAR NOT NULL , \"Progress\" INTEGER NOT NULL );");
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB);");
-            db.execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"Tasks\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
             db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectResource\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"ResourceID\" INTEGER NOT NULL , \"ProjectID\" INTEGER NOT NULL );");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectTask\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"TaskID\" INTEGER NOT NULL , \"ProjectID\" INTEGER NOT NULL )");
         }
         catch(Exception e)
         {
@@ -147,11 +148,37 @@ public class DBSmartPro extends SQLiteOpenHelper
     public int GetResourceCountByID(int id)
     {
         SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"AssignProjectResource\" WHERE ID="+String.valueOf(id)+";", null);
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"AssignProjectResource\" WHERE ResourceID="+String.valueOf(id)+";", null);
 
         result.moveToNext();
 
         return result.getCount();
+    }
+
+    public int GetTaskCountByID(int id)
+    {
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"AssignProjectTask\" WHERE ProjectID="+String.valueOf(id)+";", null);
+
+        result.moveToNext();
+
+        return result.getCount();
+    }
+
+    public List<String> GetProjectsNamesByID(int id)
+    {
+        List<String> rts = new ArrayList<String>();
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        Cursor result = mDatabase.rawQuery("SELECT Projects.Name FROM AssignProjectResource JOIN Projects, Resources ON Projects.ID=AssignProjectResource.ProjectID AND Resources.ID=AssignProjectResource.ResourceID AND Resources.ID="+String.valueOf(id)+";", null);
+
+        while (result.moveToNext())
+        {
+            rts.add(result.getString(0));
+        }
+
+        result.moveToNext();
+
+        return rts;
     }
 
     public List<EnumTask> GetTasks()
@@ -159,7 +186,7 @@ public class DBSmartPro extends SQLiteOpenHelper
         List<EnumTask> mRTS = new ArrayList<EnumTask>();
 
         SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Task\";", null);
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Tasks\";", null);
 
         while(result.moveToNext())
         {
@@ -184,14 +211,14 @@ public class DBSmartPro extends SQLiteOpenHelper
     public void RemoveTask(int id)
     {
         SQLiteDatabase mDatabase = getReadableDatabase();
-        mDatabase.execSQL("DELETE FROM \"Task\" WHERE ID=\""+String.valueOf(id)+"\";");
+        mDatabase.execSQL("DELETE FROM \"Tasks\" WHERE ID=\""+String.valueOf(id)+"\";");
     }
 
     //TODO: complete method
     public void AlterProject(int id, String name, String description, String startDate, String dueDate, String progress)
     {
         SQLiteDatabase mDatabase = getWritableDatabase();
-        //mDatabase.execSQL("UPDATE \"Resources\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\" WHERE \"ID\" = "+id+";");
+        mDatabase.execSQL("UPDATE \"Projects\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\" WHERE \"ID\" = "+id+";");
     }
 
     public void AlterResource(int id, String name, String description)
@@ -203,6 +230,6 @@ public class DBSmartPro extends SQLiteOpenHelper
     public void AlterTask(int id, String name, String description, boolean isEnded)
     {
         SQLiteDatabase mDatabase = getWritableDatabase();
-        mDatabase.execSQL("UPDATE \"Task\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\", \"Ended\" = \""+String.valueOf(isEnded)+"\" WHERE \"ID\" = "+id+";");
+        mDatabase.execSQL("UPDATE \"Tasks\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\", \"Ended\" = \""+String.valueOf(isEnded)+"\" WHERE \"ID\" = "+id+";");
     }
 }

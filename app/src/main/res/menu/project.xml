@@ -10,7 +10,16 @@
     <item android:id="@+id/action_save"
           android:title="@string/action_save"
           android:icon="@drawable/ic_action_save"
-          android:onClick="CloseActivity"
+          android:onClick="Save"
           android:showAsAction="always" />
+
+    <item android:id="@+id/action_edit"
+          android:title="@string/action_editproject"
+          android:showAsAction="never" />
+
+    <item android:id="@+id/action_delete"
+          android:title="@string/action_deleteproject"
+          android:onClick="Delete"
+          android:showAsAction="never" />
 
 </menu>

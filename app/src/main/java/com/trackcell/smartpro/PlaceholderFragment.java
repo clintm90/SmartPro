@@ -14,10 +14,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -87,12 +89,9 @@ public class PlaceholderFragment extends Fragment
                 listDataHeader2.add(getString(R.string.currentproject));
                 listDataHeader2.add(getString(R.string.lateproject));
 
-                //List<EnumProject> current = new ArrayList<EnumProject>();
-                //current.add(new EnumProject(getActivity().getApplicationContext(), 0, "First Sample Project", "My first application", EnumProject.CURRENT));
-
                 List<EnumProject> users2 = new ArrayList<EnumProject>();
-                users2.add(new EnumProject(getActivity().getApplicationContext(), 0, "Event System", "A Best application", EnumProject.WAIT));
-                users2.add(new EnumProject(getActivity().getApplicationContext(), 0, "Vertigo", "A free project managemenr", EnumProject.LATE));
+                users2.add(new EnumProject(getActivity().getApplicationContext(), -1, "Event System", "A Best application", EnumProject.WAIT));
+                users2.add(new EnumProject(getActivity().getApplicationContext(), -1, "Vertigo", "A free project managemenr", EnumProject.LATE));
 
                 listDataChild2.put(listDataHeader2.get(0), mDBSmartPro.GetProjects(true));
                 listDataChild2.put(listDataHeader2.get(1), users2);
@@ -133,49 +132,32 @@ public class PlaceholderFragment extends Fragment
                 mProjectList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
                 {
                     @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id)
+                    public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id)
                     {
                         if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD)
                         {
-                            onListItemCheck(position);
-                                /*final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                                alertDialog.setItems(new String[]{getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
+                            //onListItemCheck(position);
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                            alertDialog.setItems(new String[]{getString(R.string.action_shareproject), getString(R.string.action_deleteproject)}, new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
                                 {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which)
+                                    switch (which)
                                     {
-                                        switch (which)
-                                        {
-                                            case 0:
-                                                break;
+                                        case 0:
+                                            break;
 
-                                            case 1:
-                                                AlertDialog.Builder alertDialogDelete = new AlertDialog.Builder(getActivity());
-                                                alertDialog.setTitle(getString(R.string.action_deleteproject));
-                                                alertDialog.setMessage(getString(R.string.action_woulddelete));
-                                                alertDialog.setCancelable(false);
-                                                alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-                                                {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which)
-                                                    {
-                                                    }
-                                                });
-                                                alertDialog.setPositiveButton(getString(R.string.valid), new DialogInterface.OnClickListener()
-                                                {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which)
-                                                    {
-                                                    }
-                                                });
-                                                alertDialogDelete.create();
-                                                alertDialogDelete.show();
-                                                break;
-                                        }
+                                        case 1:
+                                            mDBSmartPro.RemoveProject(((EnumProject)view.getTag()).ID);
+                                            ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.MainContent);
+                                            mViewPager.setAdapter(mViewPager.getAdapter());
+                                            break;
                                     }
-                                });
-                                alertDialog.create();
-                                alertDialog.show();*/
+                                }
+                            });
+                            alertDialog.create();
+                            alertDialog.show();
                         }
                         return true;
                     }
@@ -231,9 +213,13 @@ public class PlaceholderFragment extends Fragment
                         final View modelResource = inflater.inflate(R.layout.model_resource, null);
                         final EditText mModelResourceName = (EditText)modelResource.findViewById(R.id.model_resource_name);
                         final EditText mModelResourceDescription = (EditText)modelResource.findViewById(R.id.model_resource_description);
+                        final Spinner mMOdelResourceProjects = (Spinner)modelResource.findViewById(R.id.model_resource_projects);
 
                         mModelResourceName.setText(((EnumResource) v.getTag()).Name);
                         mModelResourceDescription.setText(((EnumResource) v.getTag()).Description);
+
+                        final ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, mDBSmartPro.GetProjectsNamesByID(((EnumResource) v.getTag()).ID));
+                        mMOdelResourceProjects.setAdapter(adapter_state);
 
                         alertDialog.setView(modelResource);
                         alertDialog.setNegativeButton(getString(R.string.action_delete), new DialogInterface.OnClickListener()

@@ -61,5 +61,7 @@
     <string name="about_description">Cette application vous permet de gérer vos projets suivant vos ressources.\n\nPour commencer il vous suffit de créer un nouveau projet et de choisir quelle ressources s\'y appliquent.</string>
     <string name="action_addresource">Ajouter une ressource</string>
     <string name="taskended">Tâche fini</string>
+    <string name="people">%2$d Personnes</string>
+    <string name="action_editproject">Modifier le projet</string>
 
 </resources>

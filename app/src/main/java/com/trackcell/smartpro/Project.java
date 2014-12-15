@@ -2,20 +2,16 @@ package com.trackcell.smartpro;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.echo.holographlibrary.Line;
-import com.echo.holographlibrary.LineGraph;
-import com.echo.holographlibrary.LinePoint;
 
 public class Project extends Activity
 {
     private DBSmartPro mDBSmartPro;
     private int mID;
     private String mName;
+    private String mDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,6 +24,7 @@ public class Project extends Activity
 
         mID = getIntent().getExtras().getInt("id");
         mName = getIntent().getExtras().getString("name");
+        mDescription = getIntent().getExtras().getString("description");
 
         setTitle(mName);
 
@@ -40,7 +37,7 @@ public class Project extends Activity
         }
 
         //region old chart
-        Line l = new Line();
+        /*Line l = new Line();
         LinePoint p = new LinePoint();
         p.setX(0);
         p.setY(5);
@@ -58,12 +55,27 @@ public class Project extends Activity
         LineGraph li = (LineGraph)findViewById(R.id.graph);
         li.addLine(l);
         li.setRangeY(0, 10);
-        li.setLineToFill(0);
+        li.setLineToFill(0);*/
         //endregion
     }
 
-    public void CloseActivity(MenuItem item)
+    public void Save(MenuItem item)
     {
+        if(mID != -1)
+        {
+            mDBSmartPro.AlterProject(mID, "Sample Project", "salut", "2014-12-12", "2014-12-12", "50");
+        }
+        else
+        {
+            mDBSmartPro.NewProject(mName, mDescription, "2014-12-12", "2014-12-12", "50");
+        }
+        setResult(RESULT_OK, new Intent().putExtra("result", 1));
+        finish();
+    }
+
+    public void Delete(MenuItem item)
+    {
+        mDBSmartPro.RemoveProject(mID);
         setResult(RESULT_OK, new Intent().putExtra("result", 1));
         finish();
     }
@@ -88,7 +100,8 @@ public class Project extends Activity
         switch (item.getItemId())
         {
             case android.R.id.home:
-                CloseActivity(null);
+                setResult(RESULT_OK, new Intent().putExtra("result", 1));
+                finish();
                 return true;
 
             default:

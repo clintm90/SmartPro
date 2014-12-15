@@ -43,8 +43,8 @@ public class Main extends Activity implements ActionBar.TabListener
         setContentView(R.layout.activity_main);
 
         mDBSmartPro = new DBSmartPro(getApplicationContext(), "SmartPro.db", null, 1, null);
-        //mDBSmartPro.onCreate(mDBSmartPro.getWritableDatabase());
-        //mDBSmartPro.getWritableDatabase().execSQL("INSERT INTO \"main\".\"AssignProjectResource\" VALUES(NULL, 1, 1);");
+        mDBSmartPro.onCreate(mDBSmartPro.getWritableDatabase());
+        //mDBSmartPro.getWritableDatabase().execSQL("INSERT INTO \"AssignProjectTask\" VALUES(NULL, 1, 1);");
 
         //region first sqlite implement
         /*mDatabase = openOrCreateDatabase("SmartPro.db", MODE_APPEND, null);
@@ -140,7 +140,7 @@ public class Main extends Activity implements ActionBar.TabListener
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                if(((EditText)modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString().trim().equals(""))
+                if (((EditText) modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString().trim().equals(""))
                 {
                     GotoNewProject(null);
                 }
@@ -149,6 +149,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     Intent intent = new Intent(getApplicationContext(), Project.class);
                     intent.putExtra("id", -1);
                     intent.putExtra("name", ((TextView) modelNewProject.findViewById(R.id.model_newproject_name)).getText().toString());
+                    intent.putExtra("description", ((TextView) modelNewProject.findViewById(R.id.model_newproject_description)).getText().toString());
                     startActivityForResult(intent, 1);
                 }
             }
@@ -209,7 +210,7 @@ public class Main extends Activity implements ActionBar.TabListener
                     {
                         type = "true";
                     }
-                    mDBSmartPro.NewResource(((EditText) modelNewPerson.findViewById(R.id.model_newresource_name)).getText().toString(), ((EditText) modelNewPerson.findViewById(R.id.model_newresource_description)).getText().toString(), ((Spinner)modelNewPerson.findViewById(R.id.model_newresource_job)).getSelectedItem().toString(), type, "none");
+                    mDBSmartPro.NewResource(((EditText) modelNewPerson.findViewById(R.id.model_newresource_name)).getText().toString(), ((EditText) modelNewPerson.findViewById(R.id.model_newresource_description)).getText().toString(), ((Spinner) modelNewPerson.findViewById(R.id.model_newresource_job)).getSelectedItem().toString(), type, "none");
                     mViewPager.setAdapter(mSectionsPagerAdapter);
                     mViewPager.setCurrentItem(1);
                 }
@@ -292,6 +293,7 @@ public class Main extends Activity implements ActionBar.TabListener
             if (resultCode == RESULT_OK)
             {
                 overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
             }
             else
             {
@@ -351,6 +353,26 @@ public class Main extends Activity implements ActionBar.TabListener
     {
     }
 
+    public static void InflateProjectItem(final Context context, final TextView mProjectListState, final TextView mProjectListDay, final int id)
+    {
+        AsyncTask<Void, Void, Integer> mLoadProjectDay = new AsyncTask<Void, Void, Integer>()
+        {
+            @Override
+            protected Integer doInBackground(Void... params)
+            {
+                DBSmartPro mDBSmartPro = new DBSmartPro(context, "SmartPro.db", null, 1, null);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Integer input)
+            {
+                mProjectListDay.setText(String.format(context.getString(R.string.people), input, 0));
+            }
+        };
+        mLoadProjectDay.execute();
+    }
+
     public static void InflateResourceItem(final Context context, final TextView mResourcesListState, final TextView mResourcesListPerson, final int id)
     {
         AsyncTask<Void, Void, Integer> mLoadResourceStateTask = new AsyncTask<Void, Void, Integer>()
@@ -382,5 +404,39 @@ public class Main extends Activity implements ActionBar.TabListener
             }
         };
         mLoadResourceStateTask.execute();
+    }
+
+    public static void InflateTaskItem(final Context context, final TextView mProjectsListName, final int id)
+    {
+        AsyncTask<Void, Void, Integer> mLoadProjectNameTask = new AsyncTask<Void, Void, Integer>()
+        {
+            @Override
+            protected Integer doInBackground(Void... params)
+            {
+                DBSmartPro mDBSmartPro = new DBSmartPro(context, "SmartPro.db", null, 1, null);
+                return mDBSmartPro.GetTaskCountByID(id);
+            }
+
+            @Override
+            protected void onPostExecute(Integer input)
+            {
+                mProjectsListName.setText("salut");
+                /*if(input > 0)
+                {
+                    mResourcesListPerson.setVisibility(View.VISIBLE);
+                    mResourcesListState.setText(R.string.active);
+                    mResourcesListState.setBackgroundResource(R.drawable.balloon_blue);
+                    mResourcesListPerson.setText(String.valueOf(input));
+                }
+                else
+                {
+                    mResourcesListPerson.setVisibility(View.INVISIBLE);
+                    mResourcesListState.setText(R.string.inactive);
+                    mResourcesListState.setBackgroundResource(R.drawable.balloon_red);
+                }
+                mResourcesListState.getBackground().setAlpha(128);*/
+            }
+        };
+        mLoadProjectNameTask.execute();
     }
 }

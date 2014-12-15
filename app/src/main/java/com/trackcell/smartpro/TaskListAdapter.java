@@ -30,21 +30,23 @@ public class TaskListAdapter extends ArrayAdapter<EnumTask>
 
         View rowView = inflater.inflate(R.layout.model_tasklist, parent, false);
 
-        TextView taskListName = (TextView)rowView.findViewById(R.id.model_resourcesList_name);
-        TextView taskListDescription = (TextView)rowView.findViewById(R.id.model_taskList_description);
-        TextView taskListDate = (TextView)rowView.findViewById(R.id.model_taskList_date);
-        TextView taskListProject = (TextView)rowView.findViewById(R.id.title);
+        TextView mTaskListName = (TextView)rowView.findViewById(R.id.model_resourcesList_name);
+        TextView mTaskListDescription = (TextView)rowView.findViewById(R.id.model_taskList_description);
+        TextView mTaskListDate = (TextView)rowView.findViewById(R.id.model_taskList_date);
+        TextView mTaskListProject = (TextView)rowView.findViewById(R.id.title);
 
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext.getApplicationContext());
-        taskListName.setText(values.get(position).Name);
-        taskListDescription.setText(values.get(position).Description);
-        taskListDate.setText(values.get(position).Date);
+        mTaskListName.setText(values.get(position).Name);
+        mTaskListDescription.setText(values.get(position).Description);
+        mTaskListDate.setText(values.get(position).Date);
+
+        Main.InflateTaskItem(this.mContext, mTaskListProject, values.get(position).ID);
 
         if(values.get(position).isEnd)
         {
-            taskListName.setPaintFlags(taskListName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            taskListDescription.setVisibility(View.GONE);
-            taskListProject.setVisibility(View.GONE);
+            mTaskListName.setPaintFlags(mTaskListName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            mTaskListDescription.setVisibility(View.GONE);
+            mTaskListProject.setVisibility(View.GONE);
         }
 
         rowView.setTag(values.get(position));
