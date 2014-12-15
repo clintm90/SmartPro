@@ -43,6 +43,8 @@ public class Main extends Activity implements ActionBar.TabListener
         setContentView(R.layout.activity_main);
 
         mDBSmartPro = new DBSmartPro(getApplicationContext(), "SmartPro.db", null, 1, null);
+        //mDBSmartPro.onCreate(mDBSmartPro.getWritableDatabase());
+        //mDBSmartPro.getWritableDatabase().execSQL("INSERT INTO \"main\".\"AssignProjectResource\" VALUES(NULL, 1, 1);");
 
         //region first sqlite implement
         /*mDatabase = openOrCreateDatabase("SmartPro.db", MODE_APPEND, null);
@@ -349,27 +351,33 @@ public class Main extends Activity implements ActionBar.TabListener
     {
     }
 
-    public static void InflateResourceItem(final Context context, final TextView mResourcesListState, final int id)
+    public static void InflateResourceItem(final Context context, final TextView mResourcesListState, final TextView mResourcesListPerson, final int id)
     {
-        AsyncTask<Void, Void, Object[]> mLoadResourceStateTask = new AsyncTask<Void, Void, Object[]>()
+        AsyncTask<Void, Void, Integer> mLoadResourceStateTask = new AsyncTask<Void, Void, Integer>()
         {
             @Override
-            protected void onPreExecute()
-            {
-            }
-
-            @Override
-            protected Object[] doInBackground(Void... params)
+            protected Integer doInBackground(Void... params)
             {
                 DBSmartPro mDBSmartPro = new DBSmartPro(context, "SmartPro.db", null, 1, null);
-                return mDBSmartPro.GetResourceByID(id);
+                return mDBSmartPro.GetResourceCountByID(id);
             }
 
             @Override
-            protected void onPostExecute(Object[] input)
+            protected void onPostExecute(Integer input)
             {
-                mResourcesListState.setText(R.string.active);
-                mResourcesListState.setBackgroundResource(R.drawable.balloon_blue);
+                if(input > 0)
+                {
+                    mResourcesListPerson.setVisibility(View.VISIBLE);
+                    mResourcesListState.setText(R.string.active);
+                    mResourcesListState.setBackgroundResource(R.drawable.balloon_blue);
+                    mResourcesListPerson.setText(String.valueOf(input));
+                }
+                else
+                {
+                    mResourcesListPerson.setVisibility(View.INVISIBLE);
+                    mResourcesListState.setText(R.string.inactive);
+                    mResourcesListState.setBackgroundResource(R.drawable.balloon_red);
+                }
                 mResourcesListState.getBackground().setAlpha(128);
             }
         };

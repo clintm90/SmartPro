@@ -52,29 +52,7 @@ public class ResourcesExpandableListAdapter extends BaseExpandableListAdapter
         mResourcesListName.setText(((EnumResource)getChild(groupPosition, childPosition)).Name);
         mResourcesListPerson.setText(String.valueOf(((EnumResource)getChild(groupPosition, childPosition)).Person));
 
-        if(((EnumResource)getChild(groupPosition, childPosition)).Person == 0)
-        {
-            mResourcesListPerson.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
-            mResourcesListPerson.setVisibility(View.VISIBLE);
-        }
-
-        if(((EnumResource)getChild(groupPosition, childPosition)).State)
-        {
-            mResourcesListState.setText(R.string.active);
-            mResourcesListState.setBackgroundResource(R.drawable.balloon_blue);
-            mResourcesListName.setTypeface(null, Typeface.NORMAL);
-        }
-        else
-        {
-            mResourcesListState.setText(R.string.inactive);
-            mResourcesListState.setBackgroundResource(R.drawable.balloon_red);
-            mResourcesListName.setTypeface(null, Typeface.NORMAL);
-        }
-
-        Main.InflateResourceItem(this._context, mResourcesListState, ((EnumResource)getChild(groupPosition, childPosition)).ID);
+        Main.InflateResourceItem(this._context, mResourcesListState, mResourcesListPerson, ((EnumResource)getChild(groupPosition, childPosition)).ID);
 
         convertView.setTag(getChild(groupPosition, childPosition));
         return convertView;

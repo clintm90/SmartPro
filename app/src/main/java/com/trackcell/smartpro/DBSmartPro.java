@@ -36,7 +36,7 @@ public class DBSmartPro extends SQLiteOpenHelper
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Projects\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"StartDate\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"DueDate\" VARCHAR NOT NULL , \"Progress\" INTEGER NOT NULL );");
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB);");
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
-            //db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectResource\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"ProjectID\" INTEGER NOT NULL , \"ResourceID\" INTEGER NOT NULL )");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectResource\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"ResourceID\" INTEGER NOT NULL , \"ProjectID\" INTEGER NOT NULL );");
         }
         catch(Exception e)
         {
@@ -144,9 +144,14 @@ public class DBSmartPro extends SQLiteOpenHelper
         return mRTS;
     }
 
-    public Object[] GetResourceByID(int id)
+    public int GetResourceCountByID(int id)
     {
-        return null;
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"AssignProjectResource\" WHERE ID="+String.valueOf(id)+";", null);
+
+        result.moveToNext();
+
+        return result.getCount();
     }
 
     public List<EnumTask> GetTasks()
