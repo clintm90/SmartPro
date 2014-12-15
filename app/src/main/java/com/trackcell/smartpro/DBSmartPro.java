@@ -144,21 +144,6 @@ public class DBSmartPro extends SQLiteOpenHelper
         return mRTS;
     }
 
-    public List<EnumResource> GetUsers()
-    {
-        List<EnumResource> mRTS = new ArrayList<EnumResource>();
-
-        SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=\"false\";", null);
-
-        while(result.moveToNext())
-        {
-            mRTS.add(new EnumResource(mContext, result.getInt(0), result.getString(1), result.getString(2), false, 0));
-        }
-
-        return mRTS;
-    }
-
     public Object[] GetResourceByID(int id)
     {
         return null;
