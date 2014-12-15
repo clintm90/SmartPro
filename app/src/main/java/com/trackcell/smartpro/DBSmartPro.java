@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DBSmartPro extends SQLiteOpenHelper
@@ -21,12 +20,21 @@ public class DBSmartPro extends SQLiteOpenHelper
         mContext = context;
     }
 
+    //TODO: use this method
+    public void Init()
+    {
+        this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Projects\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"StartDate\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"DueDate\" VARCHAR NOT NULL , \"Progress\" INTEGER NOT NULL );");
+        this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB);");
+        this.getWritableDatabase().execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db)
     {
         try
         {
-            db.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"Projects\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"StartDate\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"DueDate\" VARCHAR NOT NULL , \"Progress\" INTEGER NOT NULL );");
+            db.execSQL("CREATE TABLE IF NOT EXISTS \"Resources\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL  UNIQUE , \"Description\" VARCHAR, \"Job\" VARCHAR, \"isCustomer\" BOOL NOT NULL  DEFAULT false, \"VCF\" BLOB);");
             db.execSQL("CREATE TABLE IF NOT EXISTS \"Task\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"Name\" VARCHAR NOT NULL , \"Description\" VARCHAR, \"Date\" VARCHAR NOT NULL  DEFAULT CURRENT_DATE, \"Ended\" BOOL NOT NULL  DEFAULT false);");
             //db.execSQL("CREATE TABLE IF NOT EXISTS \"AssignProjectResource\" (\"ID\" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , \"ProjectID\" INTEGER NOT NULL , \"ResourceID\" INTEGER NOT NULL )");
         }
@@ -39,10 +47,24 @@ public class DBSmartPro extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
+        db.execSQL("DROP TABLE IF EXISTS \"Projects\";");
         db.execSQL("DROP TABLE IF EXISTS \"Resources\";");
-        //db.execSQL("DROP TABLE IF EXISTS \"AssignProjectResource\";");
         db.execSQL("DROP TABLE IF EXISTS \"Task\";");
         onCreate(db);
+    }
+
+    public boolean NewProject(String name, String description, String startDate, String dueDate, String progress)
+    {
+        try
+        {
+            SQLiteDatabase mDatabase = getWritableDatabase();
+            mDatabase.execSQL("INSERT INTO \"Projects\" VALUES (NULL,\"" + name + "\",\"" + description + "\",\"" + startDate + "\",\"" + dueDate + "\",\"" + progress + "\");");
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
 
     public boolean NewResource(String name, String description, String job, String isConsumer, String VCF)
@@ -74,27 +96,45 @@ public class DBSmartPro extends SQLiteOpenHelper
         }
     }
 
-    public List<EnumTask> GetTasks()
+    //TODO: complete method
+    public List<EnumProject> GetProjects(boolean type)
     {
-        List<EnumTask> mRTS = new ArrayList<EnumTask>();
+        List<EnumProject> mRTS = new ArrayList<EnumProject>();
 
         SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Task\";", null);
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Projects\";", null);
 
         while(result.moveToNext())
         {
-            mRTS.add(new EnumTask(mContext, result.getInt(0), Boolean.valueOf(result.getString(4)), result.getString(1), result.getString(2), result.getString(3)));
+            mRTS.add(new EnumProject(mContext, result.getInt(0), result.getString(1), result.getString(2), EnumProject.CURRENT));
         }
 
         return mRTS;
     }
 
-    public List<EnumResource> GetCustomers()
+    //TODO: complete
+    public Object[] GetProjectByID(int id)
+    {
+        Object[] rts = new Object[10];
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Projects\" WHERE ID="+String.valueOf(id)+";", null);
+
+        result.moveToNext();
+
+        rts[0] = result.getString(1);
+        rts[1] = result.getString(2);
+        rts[2] = result.getString(3);
+        rts[3] = result.getString(4);
+
+        return rts;
+    }
+
+    public List<EnumResource> GetResources(final boolean isCustomer)
     {
         List<EnumResource> mRTS = new ArrayList<EnumResource>();
 
         SQLiteDatabase mDatabase = getReadableDatabase();
-        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=\"true\";", null);
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Resources\" WHERE isCustomer=\""+String.valueOf(isCustomer)+"\";", null);
 
         while(result.moveToNext())
         {
@@ -119,16 +159,49 @@ public class DBSmartPro extends SQLiteOpenHelper
         return mRTS;
     }
 
-    public void RemoveTask(int id)
+    public Object[] GetResourceByID(int id)
+    {
+        return null;
+    }
+
+    public List<EnumTask> GetTasks()
+    {
+        List<EnumTask> mRTS = new ArrayList<EnumTask>();
+
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        Cursor result = mDatabase.rawQuery("SELECT * FROM \"Task\";", null);
+
+        while(result.moveToNext())
+        {
+            mRTS.add(new EnumTask(mContext, result.getInt(0), Boolean.valueOf(result.getString(4)), result.getString(1), result.getString(2), result.getString(3)));
+        }
+
+        return mRTS;
+    }
+
+    public void RemoveProject(int id)
     {
         SQLiteDatabase mDatabase = getReadableDatabase();
-        mDatabase.execSQL("DELETE FROM \"Task\" WHERE ID=\""+String.valueOf(id)+"\";");
+        mDatabase.execSQL("DELETE FROM \"Projects\" WHERE ID=\""+String.valueOf(id)+"\";");
     }
 
     public void RemoveResource(int id)
     {
         SQLiteDatabase mDatabase = getReadableDatabase();
         mDatabase.execSQL("DELETE FROM \"Resources\" WHERE ID=\""+String.valueOf(id)+"\";");
+    }
+
+    public void RemoveTask(int id)
+    {
+        SQLiteDatabase mDatabase = getReadableDatabase();
+        mDatabase.execSQL("DELETE FROM \"Task\" WHERE ID=\""+String.valueOf(id)+"\";");
+    }
+
+    //TODO: complete method
+    public void AlterProject(int id, String name, String description, String startDate, String dueDate, String progress)
+    {
+        SQLiteDatabase mDatabase = getWritableDatabase();
+        //mDatabase.execSQL("UPDATE \"Resources\" SET \"Name\" = \""+name+"\", \"Description\" = \""+description+"\" WHERE \"ID\" = "+id+";");
     }
 
     public void AlterResource(int id, String name, String description)

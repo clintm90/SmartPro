@@ -74,7 +74,7 @@ public class ResourcesExpandableListAdapter extends BaseExpandableListAdapter
             mResourcesListName.setTypeface(null, Typeface.NORMAL);
         }
 
-        mResourcesListState.getBackground().setAlpha(128);
+        Main.InflateResourceItem(this._context, mResourcesListState, ((EnumResource)getChild(groupPosition, childPosition)).ID);
 
         convertView.setTag(getChild(groupPosition, childPosition));
         return convertView;

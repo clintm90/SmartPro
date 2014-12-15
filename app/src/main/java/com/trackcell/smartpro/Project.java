@@ -13,17 +13,33 @@ import com.echo.holographlibrary.LinePoint;
 
 public class Project extends Activity
 {
+    private DBSmartPro mDBSmartPro;
+    private int mID;
+    private String mName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
+        mDBSmartPro = new DBSmartPro(getApplicationContext(), "SmartPro.db", null, 1, null);
+
         setContentView(R.layout.activity_project);
 
-        setTitle(getIntent().getExtras().getString("name"));
+        mID = getIntent().getExtras().getInt("id");
+        mName = getIntent().getExtras().getString("name");
+
+        setTitle(mName);
 
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
 
+        //TODO: implement loading project
+        if(mID != -1)
+        {
+            Object[] rts = mDBSmartPro.GetProjectByID(mID);
+        }
+
+        //region old chart
         Line l = new Line();
         LinePoint p = new LinePoint();
         p.setX(0);
@@ -43,6 +59,7 @@ public class Project extends Activity
         li.addLine(l);
         li.setRangeY(0, 10);
         li.setLineToFill(0);
+        //endregion
     }
 
     public void CloseActivity(MenuItem item)

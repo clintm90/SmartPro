@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class EnumProject implements Serializable
 {
     public Context mContext;
+    public int ID;
     public String Name;
     public String Description;
     public int State;
@@ -15,9 +16,10 @@ public class EnumProject implements Serializable
     public final static int WAIT = 1;
     public final static int LATE = 2;
 
-    public EnumProject(Context context, String name, String description, int state)
+    public EnumProject(Context context, int id, String name, String description, int state)
     {
         mContext = context;
+        ID = id;
         Name = name;
         Description = description;
         State = state;
